@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Doodle Dash</title>
 
 <style>
 * {
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
 }
 
 html, body {
@@ -18,85 +18,79 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #b9dce8;
+  background: #b9dbe5;
   font-family: Arial, sans-serif;
-  touch-action: none;
 }
 
 canvas {
   display: block;
 }
 
-/* ---------- START ---------- */
+/* START SCREEN */
 
-#start {
+#startScreen {
   position: fixed;
   inset: 0;
   z-index: 100;
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 
   background: #c9e5df;
 }
 
-.startBox {
-  width: min(90%, 470px);
-
-  background: #fffaf1;
-
-  border: 4px solid #403a37;
-  border-radius: 28px;
-
+.startCard {
+  width: min(90%, 430px);
   padding: 30px;
 
   text-align: center;
 
-  box-shadow: 8px 8px 0 rgba(64,58,55,.25);
+  background: #fffaf0;
+  border: 4px solid #3d3936;
+  border-radius: 28px;
+
+  box-shadow: 8px 8px 0 rgba(61,57,54,.2);
 }
 
-.startBox h1 {
-  margin: 0;
-
-  font-size: 55px;
-  letter-spacing: -2px;
+.startCard h1 {
+  margin: 0 0 8px;
+  font-size: 52px;
+  color: #3d3936;
 }
 
-.startBox p {
-  color: #706760;
-  line-height: 1.6;
+.startCard p {
+  color: #756d67;
+  line-height: 1.5;
 }
 
 #startButton {
-  padding: 14px 28px;
+  border: 3px solid #3d3936;
+  border-radius: 15px;
 
-  border: 3px solid #403a37;
-  border-radius: 16px;
+  padding: 13px 25px;
 
-  background: #8ebd96;
+  background: #91bd98;
   color: white;
 
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
 
-  box-shadow: 4px 4px 0 #403a37;
+  box-shadow: 4px 4px 0 #3d3936;
 }
 
 #startButton:active {
-  transform: translate(3px,3px);
+  transform: translate(3px, 3px);
 }
 
-/* ---------- HUD ---------- */
+/* HUD */
 
 #hud {
   position: fixed;
-
-  top: 14px;
-  left: 14px;
-  right: 14px;
-
   z-index: 20;
+  top: 12px;
+  left: 12px;
+  right: 12px;
 
   display: flex;
   justify-content: space-between;
@@ -104,85 +98,79 @@ canvas {
   pointer-events: none;
 }
 
-.card {
-  background: rgba(255,250,241,.95);
+.hudBox {
+  background: rgba(255,250,240,.94);
+  border: 3px solid #3d3936;
+  border-radius: 15px;
 
-  border: 3px solid #403a37;
-  border-radius: 16px;
+  padding: 9px 13px;
 
-  padding: 9px 14px;
-
-  box-shadow: 4px 4px 0 rgba(64,58,55,.22);
+  box-shadow: 3px 3px 0 rgba(61,57,54,.2);
 }
 
 #money {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: bold;
 }
 
 #objective {
   position: fixed;
+  z-index: 20;
 
-  top: 88px;
+  top: 72px;
   left: 50%;
 
   transform: translateX(-50%);
 
-  z-index: 20;
+  background: #fffaf0;
+  border: 3px solid #3d3936;
+  border-radius: 18px;
 
-  background: #fffaf1;
-
-  border: 3px solid #403a37;
-  border-radius: 22px;
-
-  padding: 9px 18px;
+  padding: 8px 16px;
 
   font-weight: bold;
-
   white-space: nowrap;
 }
 
-/* ---------- PHONE ---------- */
+/* PHONE */
 
 #phone {
   position: fixed;
-
-  width: 240px;
-
-  right: 18px;
-  bottom: 90px;
-
   z-index: 50;
+
+  right: 15px;
+  bottom: 85px;
+
+  width: 245px;
 
   display: none;
 
+  padding: 13px;
+
   background: #242424;
-
-  border: 5px solid #151515;
+  border: 5px solid #111;
   border-radius: 25px;
-
-  padding: 14px;
 
   color: white;
 
-  box-shadow: 8px 8px 0 rgba(0,0,0,.3);
+  box-shadow: 7px 7px 0 rgba(0,0,0,.3);
 }
 
-.phoneTop {
+.phoneTitle {
   text-align: center;
   font-size: 11px;
   opacity: .65;
 }
 
 .notification {
-  margin-top: 12px;
-
-  background: #f7f7f7;
-  color: #333;
-
-  border-radius: 15px;
+  margin-top: 10px;
 
   padding: 14px;
+
+  background: #f5f5f5;
+  color: #333;
+
+  border-radius: 14px;
 }
 
 .notification h3 {
@@ -194,53 +182,48 @@ canvas {
 
   margin-top: 10px;
 
-  border: 0;
-  border-radius: 12px;
-
   padding: 10px;
 
-  background: #8ebd96;
+  border: 0;
+  border-radius: 11px;
+
+  background: #91bd98;
   color: white;
 
   font-weight: bold;
 }
 
-/* ---------- INTERACTION ---------- */
+/* INTERACTION */
 
 #interaction {
   position: fixed;
+  z-index: 40;
 
   left: 50%;
-  bottom: 125px;
+  bottom: 120px;
 
   transform: translateX(-50%);
 
-  z-index: 30;
-
   display: none;
 
-  background: #fff8df;
+  padding: 11px 20px;
 
-  border: 3px solid #403a37;
+  background: #fff7dc;
+  border: 3px solid #3d3936;
   border-radius: 15px;
 
-  padding: 12px 22px;
-
   font-weight: bold;
-
-  box-shadow: 4px 4px 0 rgba(64,58,55,.25);
 }
 
-/* ---------- MOBILE ---------- */
+/* MOBILE CONTROLS */
 
 #controls {
   position: fixed;
+  z-index: 30;
 
   left: 15px;
   right: 15px;
-  bottom: 18px;
-
-  z-index: 30;
+  bottom: 15px;
 
   display: flex;
   justify-content: space-between;
@@ -252,17 +235,17 @@ canvas {
 }
 
 .control {
-  width: 65px;
-  height: 58px;
+  width: 64px;
+  height: 57px;
 
-  border: 3px solid #403a37;
-  border-radius: 17px;
+  border: 3px solid #3d3936;
+  border-radius: 16px;
 
-  background: rgba(255,250,241,.9);
+  background: rgba(255,250,240,.9);
 
-  font-size: 25px;
+  font-size: 23px;
 
-  box-shadow: 3px 3px 0 rgba(64,58,55,.25);
+  box-shadow: 3px 3px 0 rgba(61,57,54,.25);
 }
 
 .control:active {
@@ -275,58 +258,54 @@ canvas {
   }
 }
 
-/* ---------- MESSAGE ---------- */
+/* MESSAGE */
 
 #message {
   position: fixed;
+  z-index: 200;
 
   left: 50%;
   top: 50%;
 
-  transform: translate(-50%,-50%);
-
-  z-index: 200;
+  transform: translate(-50%, -50%);
 
   display: none;
 
-  background: #fffaf1;
+  min-width: 220px;
 
-  border: 4px solid #403a37;
+  padding: 20px;
+
+  background: #fffaf0;
+
+  border: 4px solid #3d3936;
   border-radius: 20px;
-
-  padding: 20px 28px;
 
   text-align: center;
 
-  font-size: 23px;
+  font-size: 21px;
   font-weight: bold;
 
-  box-shadow: 6px 6px 0 rgba(64,58,55,.3);
+  box-shadow: 6px 6px 0 rgba(61,57,54,.25);
 }
 </style>
 </head>
 
 <body>
 
+<!-- START -->
 
-<!-- START SCREEN -->
-
-<div id="start">
-
-  <div class="startBox">
+<div id="startScreen">
+  <div class="startCard">
 
     <h1>Doodle Dash</h1>
 
     <p>
-      Welcome to your new delivery job! 🚗
+      Your delivery shift starts now.
     </p>
 
     <p>
-      Get a delivery text.<br>
-      Drive to the restaurant.<br>
-      Pick up the food.<br>
-      Deliver it to the customer.<br>
-      Get paid!
+      Get an order → drive to the restaurant →
+      pick it up → deliver it → get paid!
     </p>
 
     <button id="startButton">
@@ -334,7 +313,6 @@ canvas {
     </button>
 
   </div>
-
 </div>
 
 
@@ -342,19 +320,18 @@ canvas {
 
 <div id="hud">
 
-  <div class="card">
-    📦 <span id="orderText">Waiting for an order...</span>
+  <div class="hudBox">
+    📦 <span id="orderStatus">Waiting...</span>
   </div>
 
-  <div class="card">
+  <div class="hudBox">
     💵 $<span id="money">0.00</span>
   </div>
 
 </div>
 
-
 <div id="objective">
-  Waiting for a delivery...
+  Start your shift!
 </div>
 
 
@@ -362,7 +339,7 @@ canvas {
 
 <div id="phone">
 
-  <div class="phoneTop">
+  <div class="phoneTitle">
     DOODLE PHONE
   </div>
 
@@ -384,36 +361,22 @@ canvas {
 <!-- INTERACTION -->
 
 <div id="interaction">
-  Press E to interact
+  Press E
 </div>
 
 
-<!-- MOBILE CONTROLS -->
+<!-- MOBILE -->
 
 <div id="controls">
 
   <div class="controlGroup">
-
-    <button class="control" id="left">
-      ◀
-    </button>
-
-    <button class="control" id="right">
-      ▶
-    </button>
-
+    <button class="control" id="left">◀</button>
+    <button class="control" id="right">▶</button>
   </div>
 
   <div class="controlGroup">
-
-    <button class="control" id="brake">
-      ▼
-    </button>
-
-    <button class="control" id="gas">
-      ▲
-    </button>
-
+    <button class="control" id="brake">▼</button>
+    <button class="control" id="gas">▲</button>
   </div>
 
 </div>
@@ -426,90 +389,79 @@ canvas {
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
 
-
 <script>
 
 /* =========================================================
-   GAME SETUP
+   SETUP
 ========================================================= */
 
 const scene = new THREE.Scene();
 
-scene.background =
-  new THREE.Color("#b9dce8");
+scene.background = new THREE.Color(0xb9dbe5);
 
+const camera = new THREE.PerspectiveCamera(
+  70,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
 
-const camera =
-  new THREE.PerspectiveCamera(
-    72,
-    innerWidth / innerHeight,
-    .1,
-    1500
-  );
-
-
-const renderer =
-  new THREE.WebGLRenderer({
-    antialias:true
-  });
+const renderer = new THREE.WebGLRenderer({
+  antialias: true
+});
 
 renderer.setSize(
-  innerWidth,
-  innerHeight
+  window.innerWidth,
+  window.innerHeight
 );
 
 renderer.setPixelRatio(
-  Math.min(devicePixelRatio,2)
+  Math.min(window.devicePixelRatio, 2)
 );
 
 renderer.shadowMap.enabled = true;
 
-document.body.appendChild(
-  renderer.domElement
-);
+document.body.appendChild(renderer.domElement);
 
 
 /* =========================================================
-   LIGHTS
+   LIGHTING
 ========================================================= */
 
-scene.add(
-  new THREE.HemisphereLight(
-    "#ffffff",
-    "#809579",
-    2.2
-  )
+const skyLight = new THREE.HemisphereLight(
+  0xffffff,
+  0x7c9275,
+  2
 );
 
+scene.add(skyLight);
 
-const sun =
-  new THREE.DirectionalLight(
-    "#fff1d2",
-    2
-  );
 
-sun.position.set(
+const sunlight = new THREE.DirectionalLight(
+  0xfff1d4,
+  2
+);
+
+sunlight.position.set(
   100,
-  180,
+  150,
   80
 );
 
-sun.castShadow = true;
+sunlight.castShadow = true;
 
-scene.add(sun);
+scene.add(sunlight);
 
 
 /* =========================================================
    MATERIAL
 ========================================================= */
 
-function mat(color) {
-
+function makeMaterial(color) {
   return new THREE.MeshStandardMaterial({
-    color,
-    roughness:.85
+    color: color,
+    roughness: 0.85
   });
-
 }
 
 
@@ -517,17 +469,12 @@ function mat(color) {
    GROUND
 ========================================================= */
 
-const ground =
-  new THREE.Mesh(
-    new THREE.PlaneGeometry(
-      1000,
-      1000
-    ),
-    mat("#a9c99d")
-  );
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(900, 900),
+  makeMaterial(0xa8c99d)
+);
 
-ground.rotation.x =
-  -Math.PI/2;
+ground.rotation.x = -Math.PI / 2;
 
 ground.receiveShadow = true;
 
@@ -538,61 +485,39 @@ scene.add(ground);
    ROADS
 ========================================================= */
 
+const roads = [-180, -120, -60, 0, 60, 120, 180];
 const ROAD_WIDTH = 14;
 
-const roadPositions = [
-  -180,
-  -120,
-  -60,
-  0,
-  60,
-  120,
-  180
-];
+function makeRoadVertical(x) {
 
-
-function roadVertical(x) {
-
-  const road =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        ROAD_WIDTH,
-        .08,
-        760
-      ),
-      mat("#777878")
-    );
-
-  road.position.set(
-    x,
-    .04,
-    0
+  const road = new THREE.Mesh(
+    new THREE.BoxGeometry(
+      ROAD_WIDTH,
+      0.08,
+      760
+    ),
+    makeMaterial(0x747576)
   );
 
-  road.receiveShadow = true;
+  road.position.set(x, 0.04, 0);
 
   scene.add(road);
 
 
-  /* sidewalks */
+  for (const side of [-1, 1]) {
 
-  for(
-    const side of [-1,1]
-  ) {
-
-    const sidewalk =
-      new THREE.Mesh(
-        new THREE.BoxGeometry(
-          3,
-          .12,
-          760
-        ),
-        mat("#d5cec3")
-      );
+    const sidewalk = new THREE.Mesh(
+      new THREE.BoxGeometry(
+        3,
+        0.12,
+        760
+      ),
+      makeMaterial(0xd6d0c7)
+    );
 
     sidewalk.position.set(
-      x + side*8.5,
-      .08,
+      x + side * 8.5,
+      0.08,
       0
     );
 
@@ -603,45 +528,37 @@ function roadVertical(x) {
 }
 
 
-function roadHorizontal(z) {
+function makeRoadHorizontal(z) {
 
-  const road =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        760,
-        .08,
-        ROAD_WIDTH
-      ),
-      mat("#777878")
-    );
-
-  road.position.set(
-    0,
-    .04,
-    z
+  const road = new THREE.Mesh(
+    new THREE.BoxGeometry(
+      760,
+      0.08,
+      ROAD_WIDTH
+    ),
+    makeMaterial(0x747576)
   );
+
+  road.position.set(0, 0.04, z);
 
   scene.add(road);
 
 
-  for(
-    const side of [-1,1]
-  ) {
+  for (const side of [-1, 1]) {
 
-    const sidewalk =
-      new THREE.Mesh(
-        new THREE.BoxGeometry(
-          760,
-          .12,
-          3
-        ),
-        mat("#d5cec3")
-      );
+    const sidewalk = new THREE.Mesh(
+      new THREE.BoxGeometry(
+        760,
+        0.12,
+        3
+      ),
+      makeMaterial(0xd6d0c7)
+    );
 
     sidewalk.position.set(
       0,
-      .08,
-      z + side*8.5
+      0.08,
+      z + side * 8.5
     );
 
     scene.add(sidewalk);
@@ -651,40 +568,30 @@ function roadHorizontal(z) {
 }
 
 
-roadPositions.forEach(
-  roadVertical
-);
-
-roadPositions.forEach(
-  roadHorizontal
-);
+roads.forEach(makeRoadVertical);
+roads.forEach(makeRoadHorizontal);
 
 
 /* =========================================================
-   ROAD MARKINGS
+   ROAD DASHES
 ========================================================= */
 
-roadPositions.forEach(x => {
+for (const x of roads) {
 
-  for(
-    let z=-370;
-    z<370;
-    z+=18
-  ) {
+  for (let z = -370; z < 370; z += 18) {
 
-    const line =
-      new THREE.Mesh(
-        new THREE.BoxGeometry(
-          .25,
-          .05,
-          9
-        ),
-        mat("#f1e5b9")
-      );
+    const line = new THREE.Mesh(
+      new THREE.BoxGeometry(
+        0.25,
+        0.04,
+        8
+      ),
+      makeMaterial(0xf2e5b6)
+    );
 
     line.position.set(
       x,
-      .1,
+      0.1,
       z
     );
 
@@ -692,30 +599,25 @@ roadPositions.forEach(x => {
 
   }
 
-});
+}
 
 
-roadPositions.forEach(z => {
+for (const z of roads) {
 
-  for(
-    let x=-370;
-    x<370;
-    x+=18
-  ) {
+  for (let x = -370; x < 370; x += 18) {
 
-    const line =
-      new THREE.Mesh(
-        new THREE.BoxGeometry(
-          9,
-          .05,
-          .25
-        ),
-        mat("#f1e5b9")
-      );
+    const line = new THREE.Mesh(
+      new THREE.BoxGeometry(
+        8,
+        0.04,
+        0.25
+      ),
+      makeMaterial(0xf2e5b6)
+    );
 
     line.position.set(
       x,
-      .1,
+      0.1,
       z
     );
 
@@ -723,7 +625,7 @@ roadPositions.forEach(z => {
 
   }
 
-});
+}
 
 
 /* =========================================================
@@ -733,37 +635,34 @@ roadPositions.forEach(z => {
 const houses = [];
 
 const houseColors = [
-  "#e9b7ad",
-  "#dcc89f",
-  "#b9d5b1",
-  "#cdb9df",
-  "#d8b18c",
-  "#afd0d3"
+  0xe8b5aa,
+  0xdac59c,
+  0xb7d3ad,
+  0xcab8db,
+  0xd6af8c,
+  0xa9ced1
 ];
 
 
-function makeHouse(x,z) {
+function makeHouse(x, z) {
 
-  const group =
-    new THREE.Group();
+  const group = new THREE.Group();
 
 
-  const body =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        15,
-        9,
-        12
-      ),
-      mat(
-        houseColors[
-          Math.floor(
-            Math.random() *
-            houseColors.length
-          )
-        ]
-      )
-    );
+  const body = new THREE.Mesh(
+    new THREE.BoxGeometry(
+      15,
+      9,
+      12
+    ),
+    makeMaterial(
+      houseColors[
+        Math.floor(
+          Math.random() * houseColors.length
+        )
+      ]
+    )
+  );
 
   body.position.y = 4.5;
 
@@ -772,63 +671,57 @@ function makeHouse(x,z) {
   group.add(body);
 
 
-  const roof =
-    new THREE.Mesh(
-      new THREE.ConeGeometry(
-        10,
-        6,
-        4
-      ),
-      mat("#927070")
-    );
+  const roof = new THREE.Mesh(
+    new THREE.ConeGeometry(
+      10,
+      6,
+      4
+    ),
+    makeMaterial(0x967070)
+  );
 
   roof.position.y = 12;
 
-  roof.rotation.y =
-    Math.PI/4;
+  roof.rotation.y = Math.PI / 4;
 
   roof.castShadow = true;
 
   group.add(roof);
 
 
-  const door =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        2.5,
-        4,
-        .3
-      ),
-      mat("#8b6758")
-    );
+  const door = new THREE.Mesh(
+    new THREE.BoxGeometry(
+      2.5,
+      4,
+      0.25
+    ),
+    makeMaterial(0x806153)
+  );
 
   door.position.set(
     0,
     2,
-    -6.2
+    -6.15
   );
 
   group.add(door);
 
 
-  for(
-    const wx of [-4,4]
-  ) {
+  for (const wx of [-4, 4]) {
 
-    const window =
-      new THREE.Mesh(
-        new THREE.BoxGeometry(
-          3,
-          2.5,
-          .25
-        ),
-        mat("#a9d9e1")
-      );
+    const window = new THREE.Mesh(
+      new THREE.BoxGeometry(
+        3,
+        2.5,
+        0.2
+      ),
+      makeMaterial(0xa9d8df)
+    );
 
     window.position.set(
       wx,
       6,
-      -6.2
+      -6.15
     );
 
     group.add(window);
@@ -836,55 +729,38 @@ function makeHouse(x,z) {
   }
 
 
-  group.position.set(
-    x,
-    0,
-    z
-  );
+  group.position.set(x, 0, z);
 
   scene.add(group);
 
+
   houses.push({
-    x,
-    z,
-    group
+    x: x,
+    z: z,
+    group: group
   });
 
 }
 
 
 /*
-  Houses are deliberately placed
-  inside blocks.
+  Houses go inside the blocks,
+  never directly on the roads.
 */
 
-for(
-  let x=-210;
-  x<=210;
-  x+=60
-) {
+for (let x = -210; x <= 210; x += 60) {
 
-  for(
-    let z=-210;
-    z<=210;
-    z+=60
-  ) {
+  for (let z = -210; z <= 210; z += 60) {
 
-    if(
-      roadPositions.includes(x) ||
-      roadPositions.includes(z)
-    ) continue;
+    if (
+      roads.includes(x) ||
+      roads.includes(z)
+    ) {
+      continue;
+    }
 
-
-    makeHouse(
-      x-17,
-      z-17
-    );
-
-    makeHouse(
-      x+17,
-      z+17
-    );
+    makeHouse(x - 17, z - 17);
+    makeHouse(x + 17, z + 17);
 
   }
 
@@ -898,36 +774,33 @@ for(
 const trees = [];
 
 
-function makeTree(x,z) {
+function makeTree(x, z) {
 
-  const group =
-    new THREE.Group();
+  const group = new THREE.Group();
 
 
-  const trunk =
-    new THREE.Mesh(
-      new THREE.CylinderGeometry(
-        .65,
-        .8,
-        4,
-        8
-      ),
-      mat("#80624c")
-    );
+  const trunk = new THREE.Mesh(
+    new THREE.CylinderGeometry(
+      0.65,
+      0.8,
+      4,
+      8
+    ),
+    makeMaterial(0x80624d)
+  );
 
   trunk.position.y = 2;
 
   group.add(trunk);
 
 
-  const leaves =
-    new THREE.Mesh(
-      new THREE.IcosahedronGeometry(
-        4.3,
-        1
-      ),
-      mat("#72a36e")
-    );
+  const leaves = new THREE.Mesh(
+    new THREE.IcosahedronGeometry(
+      4,
+      1
+    ),
+    makeMaterial(0x72a36d)
+  );
 
   leaves.position.y = 6;
 
@@ -936,56 +809,42 @@ function makeTree(x,z) {
   group.add(leaves);
 
 
-  group.position.set(
-    x,
-    0,
-    z
-  );
+  group.position.set(x, 0, z);
 
   scene.add(group);
 
+
   trees.push({
-    x,
-    z
+    x: x,
+    z: z
   });
 
 }
 
 
 /*
-  Trees only go in yards.
+  Only create trees when they're
+  safely away from roads.
 */
 
-for(
-  let x=-240;
-  x<=240;
-  x+=30
-) {
+for (let x = -240; x <= 240; x += 30) {
 
-  for(
-    let z=-240;
-    z<=240;
-    z+=30
-  ) {
+  for (let z = -240; z <= 240; z += 30) {
 
-    const nearRoadX =
-      roadPositions.some(
-        r => Math.abs(x-r)<12
-      );
+    const closeX = roads.some(
+      r => Math.abs(x - r) < 12
+    );
 
-    const nearRoadZ =
-      roadPositions.some(
-        r => Math.abs(z-r)<12
-      );
+    const closeZ = roads.some(
+      r => Math.abs(z - r) < 12
+    );
 
-    if(
-      !nearRoadX &&
-      !nearRoadZ &&
-      Math.random()<.32
+    if (
+      !closeX &&
+      !closeZ &&
+      Math.random() < 0.3
     ) {
-
-      makeTree(x,z);
-
+      makeTree(x, z);
     }
 
   }
@@ -1007,51 +866,47 @@ function makeRestaurant(
   color
 ) {
 
-  const group =
-    new THREE.Group();
+  const group = new THREE.Group();
 
 
-  const body =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        20,
-        10,
-        15
-      ),
-      mat(color)
-    );
+  const building = new THREE.Mesh(
+    new THREE.BoxGeometry(
+      20,
+      10,
+      15
+    ),
+    makeMaterial(color)
+  );
 
-  body.position.y = 5;
+  building.position.y = 5;
 
-  body.castShadow = true;
+  building.castShadow = true;
 
-  group.add(body);
+  group.add(building);
 
 
-  const roof =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        22,
-        1,
-        17
-      ),
-      mat("#80686a")
-    );
+  const roof = new THREE.Mesh(
+    new THREE.BoxGeometry(
+      22,
+      1,
+      17
+    ),
+    makeMaterial(0x806869)
+  );
 
   roof.position.y = 10.5;
 
   group.add(roof);
 
 
-  const sign =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        15,
-        3,
-        .4
-      ),
-      mat("#fff0bb")
-    );
+  const sign = new THREE.Mesh(
+    new THREE.BoxGeometry(
+      15,
+      3,
+      0.3
+    ),
+    makeMaterial(0xffefb7)
+  );
 
   sign.position.set(
     0,
@@ -1072,10 +927,9 @@ function makeRestaurant(
 
 
   restaurants.push({
-    name,
-    x,
-    z,
-    group
+    name: name,
+    x: x,
+    z: z
   });
 
 }
@@ -1085,70 +939,69 @@ makeRestaurant(
   "Doodle Burger",
   0,
   -45,
-  "#e5ae92"
+  0xe4ae91
 );
 
 makeRestaurant(
-  "Sunny Café",
+  "Sunny Cafe",
   120,
   0,
-  "#d8b3d7"
+  0xd7b4d5
 );
 
 makeRestaurant(
   "Noodle House",
   -120,
   0,
-  "#9fc4d5"
+  0x9fc4d5
 );
 
 
 /* =========================================================
-   FIRST PERSON CAR
+   CAR / FIRST PERSON
 ========================================================= */
 
-const car = {
+/*
+  The player is the camera.
 
-  x:0,
-  z:30,
+  X = left/right position
+  Z = forward/back position
+  rotationY = direction
+*/
 
-  angle:Math.PI,
-
-  speed:0,
-
-  maxSpeed:.9,
-
-  color:"#e99d92"
-
+const player = {
+  x: 0,
+  z: 30,
+  rotation: 0,
+  speed: 0
 };
 
 
-/*
-  The camera is the driver's head.
-*/
+/* Camera starts inside the car */
 
 camera.position.set(
-  0,
+  player.x,
   3.1,
-  0
+  player.z
 );
+
+camera.rotation.order = "YXZ";
 
 
 /* Dashboard */
 
-const dashboard =
-  new THREE.Mesh(
-    new THREE.BoxGeometry(
-      11,
-      1.3,
-      2
-    ),
-    mat("#393735")
-  );
+const dashboard = new THREE.Mesh(
+  new THREE.BoxGeometry(
+    10,
+    1.1,
+    2
+  ),
+  makeMaterial(0x393735)
+);
 
 dashboard.position.set(
   0,
-  -2.5,
+  -2.45,
   -1
 );
 
@@ -1157,15 +1010,14 @@ camera.add(dashboard);
 
 /* Hood */
 
-const hood =
-  new THREE.Mesh(
-    new THREE.BoxGeometry(
-      8,
-      .65,
-      4
-    ),
-    mat(car.color)
-  );
+const hood = new THREE.Mesh(
+  new THREE.BoxGeometry(
+    8,
+    0.7,
+    4
+  ),
+  makeMaterial(0xe99d92)
+);
 
 hood.position.set(
   0,
@@ -1178,22 +1030,19 @@ camera.add(hood);
 
 /* Windshield pillars */
 
-for(
-  const side of [-1,1]
-) {
+for (const side of [-1, 1]) {
 
-  const pillar =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        .35,
-        5,
-        .4
-      ),
-      mat("#292827")
-    );
+  const pillar = new THREE.Mesh(
+    new THREE.BoxGeometry(
+      0.35,
+      5,
+      0.4
+    ),
+    makeMaterial(0x292827)
+  );
 
   pillar.position.set(
-    side*5,
+    side * 5,
     0,
     -2
   );
@@ -1205,56 +1054,46 @@ for(
 
 /* Steering wheel */
 
-const wheel =
-  new THREE.Mesh(
-    new THREE.TorusGeometry(
-      1.1,
-      .18,
-      8,
-      24
-    ),
-    mat("#242321")
-  );
+const steeringWheel = new THREE.Mesh(
+  new THREE.TorusGeometry(
+    1.05,
+    0.17,
+    8,
+    24
+  ),
+  makeMaterial(0x252321)
+);
 
-wheel.position.set(
-  -2.8,
+steeringWheel.position.set(
+  -2.7,
   -1.7,
   -2.6
 );
 
-wheel.rotation.x =
-  Math.PI/2;
+steeringWheel.rotation.x =
+  Math.PI / 2;
 
-camera.add(wheel);
+camera.add(steeringWheel);
 
 
 scene.add(camera);
 
 
 /* =========================================================
-   ORDER DATA
+   GAME STATE
 ========================================================= */
 
-const customerNames = [
-  "Mia",
-  "Lily",
-  "Emma",
-  "Noah",
-  "Ava",
-  "Sophie",
-  "Ruby",
-  "Ella"
-];
+let gameStarted = false;
 
-
-let state = "waiting";
+let orderState = "none";
 
 let currentRestaurant = null;
 let currentHouse = null;
 
-let earnedMoney = 0;
+let money = 0;
+let currentPay = 0;
 
-let deliveryPay = 0;
+let customerName = "";
 
 
 /* =========================================================
@@ -1263,60 +1102,78 @@ let deliveryPay = 0;
 
 const keys = {};
 
-addEventListener(
+
+window.addEventListener(
   "keydown",
-  e => {
+  function(event) {
 
-    keys[
-      e.key.toLowerCase()
-    ] = true;
+    keys[event.key.toLowerCase()] = true;
+
+    if (
+      event.key.toLowerCase() === "e"
+    ) {
+      interact();
+    }
 
   }
 );
 
 
-addEventListener(
+window.addEventListener(
   "keyup",
-  e => {
+  function(event) {
 
-    keys[
-      e.key.toLowerCase()
-    ] = false;
+    keys[event.key.toLowerCase()] = false;
 
   }
 );
 
 
-/* Mobile buttons */
+/* =========================================================
+   MOBILE BUTTONS
+========================================================= */
 
-function mobile(id,key) {
+function holdButton(id, key) {
 
   const button =
     document.getElementById(id);
 
+
   button.addEventListener(
     "pointerdown",
-    e => {
+    function(event) {
 
-      e.preventDefault();
+      event.preventDefault();
 
       keys[key] = true;
 
     }
   );
 
+
   button.addEventListener(
     "pointerup",
-    () => {
+    function() {
 
       keys[key] = false;
 
     }
   );
 
+
   button.addEventListener(
     "pointercancel",
-    () => {
+    function() {
+
+      keys[key] = false;
+
+    }
+  );
+
+
+  button.addEventListener(
+    "pointerleave",
+    function() {
 
       keys[key] = false;
 
@@ -1325,39 +1182,40 @@ function mobile(id,key) {
 
 }
 
-mobile("left","arrowleft");
-mobile("right","arrowright");
-mobile("gas","arrowup");
-mobile("brake","arrowdown");
+
+holdButton("left", "a");
+holdButton("right", "d");
+holdButton("gas", "w");
+holdButton("brake", "s");
 
 
 /* =========================================================
-   START
+   START GAME
 ========================================================= */
 
 document.getElementById(
   "startButton"
-).onclick = () => {
+).addEventListener(
+  "click",
+  function() {
 
-  document.getElementById(
-    "start"
-  ).style.display = "none";
+    gameStarted = true;
 
-  setTimeout(
-    newOrder,
-    1000
-  );
+    document.getElementById(
+      "startScreen"
+    ).style.display = "none";
 
-};
+    createOrder();
+
+  }
+);
 
 
 /* =========================================================
-   NEW ORDER
+   CREATE ORDER
 ========================================================= */
 
-function newOrder() {
-
-  state = "waiting";
+function createOrder() {
 
   currentRestaurant =
     restaurants[
@@ -1377,42 +1235,53 @@ function newOrder() {
     ];
 
 
-  const customer =
-    customerNames[
+  const names = [
+    "Mia",
+    "Lily",
+    "Emma",
+    "Ava",
+    "Sophie",
+    "Ella",
+    "Ruby",
+    "Noah"
+  ];
+
+
+  customerName =
+    names[
       Math.floor(
         Math.random() *
-        customerNames.length
+        names.length
       )
     ];
 
 
-  deliveryPay =
+  currentPay =
     5 +
     Math.floor(
-      Math.random()*7
+      Math.random() * 8
     );
+
+
+  orderState = "offered";
 
 
   document.getElementById(
     "notificationText"
   ).innerHTML =
-
-    "<b>New delivery!</b><br><br>" +
-
     "🍔 Pick up from:<br>" +
-
     "<b>" +
     currentRestaurant.name +
     "</b><br><br>" +
 
-    "🏠 Customer:<br>" +
-
+    "🏠 Deliver to:<br>" +
     "<b>" +
-    customer +
+    customerName +
     "</b><br><br>" +
 
-    "💵 Estimated pay: $" +
-    deliveryPay.toFixed(2);
+    "💵 Pay: <b>$" +
+    currentPay.toFixed(2) +
+    "</b>";
 
 
   document.getElementById(
@@ -1423,7 +1292,7 @@ function newOrder() {
   document.getElementById(
     "objective"
   ).textContent =
-    "📱 New order — check your phone!";
+    "📱 You got a new delivery!";
 
 }
 
@@ -1434,317 +1303,407 @@ function newOrder() {
 
 document.getElementById(
   "acceptButton"
-).onclick = () => {
+).addEventListener(
+  "click",
+  function() {
 
-  document.getElementById(
-    "phone"
-  ).style.display = "none";
-
-
-  state = "toRestaurant";
-
-
-  document.getElementById(
-    "orderText"
-  ).textContent =
-    "Drive to " +
-    currentRestaurant.name;
-
-
-  document.getElementById(
-    "objective"
-  ).textContent =
-    "🍔 Drive to the restaurant";
-
-
-};
-
-
-/* =========================================================
-   INTERACTION
-========================================================= */
-
-function distanceTo(
-  x,
-  z
-) {
-
-  return Math.hypot(
-    car.x-x,
-    car.z-z
-  );
-
-}
-
-
-function updateInteraction() {
-
-  const box =
     document.getElementById(
-      "interaction"
-    );
+      "phone"
+    ).style.display = "none";
 
 
-  if(
-    state === "toRestaurant" &&
-    distanceTo(
-      currentRestaurant.x,
-      currentRestaurant.z
-    ) < 17
-  ) {
-
-    box.style.display = "block";
-
-    box.textContent =
-      "Press E to pick up food 📦";
-
-  }
-
-  else if(
-    state === "toCustomer" &&
-    distanceTo(
-      currentHouse.x,
-      currentHouse.z
-    ) < 14
-  ) {
-
-    box.style.display = "block";
-
-    box.textContent =
-      "Press E to drop off 📦";
-
-  }
-
-  else {
-
-    box.style.display = "none";
-
-  }
-
-}
-
-
-/* =========================================================
-   INTERACT
-========================================================= */
-
-function interact() {
-
-  if(
-    state === "toRestaurant" &&
-    distanceTo(
-      currentRestaurant.x,
-      currentRestaurant.z
-    ) < 17
-  ) {
-
-    state = "toCustomer";
+    orderState =
+      "restaurant";
 
 
     document.getElementById(
-      "orderText"
+      "orderStatus"
     ).textContent =
-      "Deliver the food";
+      "Drive to " +
+      currentRestaurant.name;
 
 
     document.getElementById(
       "objective"
     ).textContent =
-      "📦 Food picked up — drive to the customer!";
-
-
-    showMessage(
-      "Order picked up! 📦"
-    );
-
-  }
-
-
-  else if(
-    state === "toCustomer" &&
-    distanceTo(
-      currentHouse.x,
-      currentHouse.z
-    ) < 14
-  ) {
-
-    state = "complete";
-
-
-    earnedMoney += deliveryPay;
-
-
-    document.getElementById(
-      "money"
-    ).textContent =
-      earnedMoney.toFixed(2);
-
-
-    document.getElementById(
-      "orderText"
-    ).textContent =
-      "Delivery complete!";
-
-
-    document.getElementById(
-      "objective"
-    ).textContent =
-      "💵 Delivery complete!";
-
-
-    showMessage(
-      "Delivery complete!<br><br>" +
-      "+$" +
-      deliveryPay.toFixed(2) +
-      " 💵"
-    );
-
-
-    setTimeout(
-      newOrder,
-      2200
-    );
-
-  }
-
-}
-
-
-addEventListener(
-  "keydown",
-  e => {
-
-    if(
-      e.key.toLowerCase() === "e"
-    ) {
-
-      interact();
-
-    }
+      "🍔 Drive to the restaurant";
 
   }
 );
 
 
 /* =========================================================
+   DISTANCE
+========================================================= */
+
+function distance(
+  x1,
+  z1,
+  x2,
+  z2
+) {
+
+  return Math.sqrt(
+    (x1 - x2) ** 2 +
+    (z1 - z2) ** 2
+  );
+
+}
+
+
+/* =========================================================
+   INTERACTION
+========================================================= */
+
+function interact() {
+
+  if (!gameStarted) {
+    return;
+  }
+
+
+  if (
+    orderState === "restaurant" &&
+    distance(
+      player.x,
+      player.z,
+      currentRestaurant.x,
+      currentRestaurant.z
+    ) < 20
+  ) {
+
+    orderState =
+      "customer";
+
+
+    document.getElementById(
+      "orderStatus"
+    ).textContent =
+      "Deliver to " +
+      customerName;
+
+
+    document.getElementById(
+      "objective"
+    ).textContent =
+      "📦 Food picked up! Drive to the house.";
+
+
+    showMessage(
+      "Food picked up! 📦"
+    );
+
+
+    return;
+
+  }
+
+
+  if (
+    orderState === "customer" &&
+    distance(
+      player.x,
+      player.z,
+      currentHouse.x,
+      currentHouse.z
+    ) < 15
+  ) {
+
+    completeDelivery();
+
+  }
+
+}
+
+
+/* =========================================================
+   INTERACTION PROMPT
+========================================================= */
+
+function updateInteraction() {
+
+  const prompt =
+    document.getElementById(
+      "interaction"
+    );
+
+
+  let show = false;
+
+
+  if (
+    orderState === "restaurant" &&
+    distance(
+      player.x,
+      player.z,
+      currentRestaurant.x,
+      currentRestaurant.z
+    ) < 20
+  ) {
+
+    prompt.textContent =
+      "Press E — Pick Up Food 📦";
+
+    show = true;
+
+  }
+
+
+  if (
+    orderState === "customer" &&
+    distance(
+      player.x,
+      player.z,
+      currentHouse.x,
+      currentHouse.z
+    ) < 15
+  ) {
+
+    prompt.textContent =
+      "Press E — Drop Off 📦";
+
+    show = true;
+
+  }
+
+
+  prompt.style.display =
+    show ? "block" : "none";
+
+}
+
+
+/* =========================================================
+   COMPLETE DELIVERY
+========================================================= */
+
+function completeDelivery() {
+
+  money += currentPay;
+
+
+  document.getElementById(
+    "money"
+  ).textContent =
+    money.toFixed(2);
+
+
+  document.getElementById(
+    "orderStatus"
+  ).textContent =
+    "Delivery complete!";
+
+
+  document.getElementById(
+    "objective"
+  ).textContent =
+    "💵 Nice! Waiting for your next order...";
+
+
+  orderState =
+    "complete";
+
+
+  showMessage(
+    "Delivery Complete!<br><br>+" +
+    "$" +
+    currentPay.toFixed(2) +
+    " 💵"
+  );
+
+
+  setTimeout(
+    createOrder,
+    2200
+  );
+
+}
+
+
+/* =========================================================
    DRIVING
 ========================================================= */
 
-function drive() {
+function updateDriving() {
 
-  const gas =
+  if (!gameStarted) {
+    return;
+  }
+
+
+  const forward =
     keys["w"] ||
     keys["arrowup"];
 
-  const brake =
+
+  const backward =
     keys["s"] ||
     keys["arrowdown"];
+
 
   const left =
     keys["a"] ||
     keys["arrowleft"];
+
 
   const right =
     keys["d"] ||
     keys["arrowright"];
 
 
-  if(gas) {
+  /*
+    ACCELERATION
+  */
 
-    car.speed += .018;
+  if (forward) {
+
+    player.speed += 0.018;
 
   }
-
   else {
 
-    car.speed *= .97;
+    player.speed *= 0.96;
 
   }
 
 
-  if(brake) {
+  /*
+    REVERSE / BRAKE
+  */
 
-    car.speed -= .025;
+  if (backward) {
+
+    if (player.speed > 0) {
+
+      player.speed -= 0.035;
+
+    }
+    else {
+
+      player.speed -= 0.012;
+
+    }
 
   }
 
 
-  car.speed =
+  /*
+    SPEED LIMIT
+  */
+
+  player.speed =
     Math.max(
-      -.3,
+      -0.35,
       Math.min(
-        car.speed,
-        car.maxSpeed
+        player.speed,
+        0.85
       )
     );
 
 
-  if(
-    Math.abs(car.speed) > .04
+  /*
+    STEERING
+  */
+
+  if (
+    Math.abs(player.speed) > 0.03
   ) {
 
-    if(left)
-      car.angle -= .035;
+    const steering =
+      0.035 *
+      Math.min(
+        Math.abs(player.speed) * 2,
+        1
+      );
 
-    if(right)
-      car.angle += .035;
+
+    if (left) {
+
+      player.rotation +=
+        player.speed >= 0
+        ? steering
+        : -steering;
+
+    }
+
+
+    if (right) {
+
+      player.rotation -=
+        player.speed >= 0
+        ? steering
+        : -steering;
+
+    }
 
   }
 
 
-  car.x +=
-    Math.sin(car.angle) *
-    car.speed;
+  /*
+    MOVE
+  */
+
+  player.x -=
+    Math.sin(player.rotation) *
+    player.speed;
 
 
-  car.z +=
-    Math.cos(car.angle) *
-    car.speed;
+  player.z -=
+    Math.cos(player.rotation) *
+    player.speed;
 
 
-  /* Keep player inside world */
+  /*
+    MAP BOUNDARY
+  */
 
-  car.x =
+  player.x =
     Math.max(
-      -360,
+      -370,
       Math.min(
-        360,
-        car.x
+        370,
+        player.x
       )
     );
 
-  car.z =
+
+  player.z =
     Math.max(
-      -360,
+      -370,
       Math.min(
-        360,
-        car.z
+        370,
+        player.z
       )
     );
 
 
-  /* Update first-person camera */
+  /*
+    CAMERA
+  */
 
   camera.position.x =
-    car.x;
+    player.x;
+
 
   camera.position.z =
-    car.z;
+    player.z;
 
 
   camera.rotation.y =
-    car.angle;
+    player.rotation;
 
 
-  /* Tiny driving bounce */
+  /*
+    SMALL CAR BOUNCE
+  */
 
   camera.position.y =
     3.1 +
     Math.sin(
-      performance.now()*.012
+      performance.now() * 0.012
     ) *
-    Math.abs(car.speed) *
-    .025;
+    Math.abs(player.speed) *
+    0.025;
 
 }
 
@@ -1753,30 +1712,32 @@ function drive() {
    COLLISIONS
 ========================================================= */
 
-function collisions() {
+function checkCollisions() {
 
   /*
-    Houses.
+    Houses
   */
 
-  for(
-    const house of houses
-  ) {
+  for (const house of houses) {
 
     const d =
-      distanceTo(
+      distance(
+        player.x,
+        player.z,
         house.x,
         house.z
       );
 
 
-    if(d < 9) {
+    if (d < 8) {
 
-      car.speed *= -.35;
+      player.x +=
+        Math.sin(player.rotation) * 0.7;
 
-      showMessage(
-        "BONK! 🏠<br>You hit a house!"
-      );
+      player.z +=
+        Math.cos(player.rotation) * 0.7;
+
+      player.speed *= -0.25;
 
     }
 
@@ -1784,27 +1745,29 @@ function collisions() {
 
 
   /*
-    Trees.
+    Trees
   */
 
-  for(
-    const tree of trees
-  ) {
+  for (const tree of trees) {
 
     const d =
-      distanceTo(
+      distance(
+        player.x,
+        player.z,
         tree.x,
         tree.z
       );
 
 
-    if(d < 4.5) {
+    if (d < 4) {
 
-      car.speed *= -.35;
+      player.x +=
+        Math.sin(player.rotation) * 0.8;
 
-      showMessage(
-        "BONK! 🌳<br>You hit a tree!"
-      );
+      player.z +=
+        Math.cos(player.rotation) * 0.8;
+
+      player.speed *= -0.3;
 
     }
 
@@ -1814,10 +1777,11 @@ function collisions() {
 
 
 /* =========================================================
-   MESSAGE
+   POPUP
 ========================================================= */
 
-let messageTimer;
+let messageTimer = null;
+
 
 function showMessage(text) {
 
@@ -1826,25 +1790,24 @@ function showMessage(text) {
       "message"
     );
 
+
   box.innerHTML = text;
 
   box.style.display = "block";
 
 
-  clearTimeout(
-    messageTimer
-  );
+  clearTimeout(messageTimer);
 
 
   messageTimer =
     setTimeout(
-      () => {
+      function() {
 
         box.style.display =
           "none";
 
       },
-      1500
+      1400
     );
 
 }
@@ -1854,19 +1817,19 @@ function showMessage(text) {
    RESIZE
 ========================================================= */
 
-addEventListener(
+window.addEventListener(
   "resize",
-  () => {
+  function() {
 
     camera.aspect =
-      innerWidth /
-      innerHeight;
+      window.innerWidth /
+      window.innerHeight;
 
     camera.updateProjectionMatrix();
 
     renderer.setSize(
-      innerWidth,
-      innerHeight
+      window.innerWidth,
+      window.innerHeight
     );
 
   }
@@ -1877,16 +1840,16 @@ addEventListener(
    GAME LOOP
 ========================================================= */
 
-function loop() {
+function gameLoop() {
 
   requestAnimationFrame(
-    loop
+    gameLoop
   );
 
 
-  drive();
+  updateDriving();
 
-  collisions();
+  checkCollisions();
 
   updateInteraction();
 
@@ -1899,7 +1862,7 @@ function loop() {
 }
 
 
-loop();
+gameLoop();
 
 </script>
 
