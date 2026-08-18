@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0,user-scalable=no">
+
+<title>Doodle Dash</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #f9efe2;
+  color: #4e423b;
+  font-family: "Quicksand", sans-serif;
+  touch-action: none;
+}
+
+#game {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------
+   SKY
+-------------------------------------------------- */
+
+#sky {
+  position: absolute;
+  inset: 0 0 35% 0;
+  background: #cfe8e5;
+  overflow: hidden;
+}
+
+.sun {
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background: #f4d98a;
+  border: 4px solid #5c514a;
+  top: 10%;
+  right: 12%;
+}
+
+.cloud {
+  position: absolute;
+  width: 110px;
+  height: 35px;
+  border: 4px solid #5c514a;
+  border-radius: 30px;
+  background: #fffaf1;
+}
+
+.cloud:before,
+.cloud:after {
+  content: "";
+  position: absolute;
+  border: 4px solid #5c514a;
+  background: #fffaf1;
+  border-radius: 50%;
+}
+
+.cloud:before {
+  width: 40px;
+  height: 40px;
+  left: 15px;
+  top: -24px;
+}
+
+.cloud:after {
+  width: 48px;
+  height: 48px;
+  right: 15px;
+  top: -30px;
+}
+
+.cloud1 {
+  left: 12%;
+  top: 17%;
+}
+
+.cloud2 {
+  left: 48%;
+  top: 10%;
+  transform: scale(.7);
+}
+
+/* --------------------------------------------------
+   DISTANT BUILDINGS
+-------------------------------------------------- */
+
+#city {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 28%;
+  height: 27%;
+}
+
+.building {
+  position: absolute;
+  bottom: 0;
+  width: 110px;
+  border: 4px solid #574b44;
+  background: #f1c7bc;
+}
+
+.building:nth-child(1) {
+  height: 150px;
+  left: 5%;
+}
+
+.building:nth-child(2) {
+  height: 100px;
+  left: 18%;
+  background: #e8d4a8;
+}
+
+.building:nth-child(3) {
+  height: 175px;
+  left: 31%;
+  background: #c8dcbf;
+}
+
+.building:nth-child(4) {
+  height: 120px;
+  right: 24%;
+  background: #e9c5d0;
+}
+
+.building:nth-child(5) {
+  height: 155px;
+  right: 8%;
+  background: #dfc9aa;
+}
+
+.window {
+  position: absolute;
+  width: 20px;
+  height: 28px;
+  border: 3px solid #574b44;
+  background: #f9e8ad;
+}
+
+.w1 { left: 20px; top: 25px; }
+.w2 { right: 20px; top: 25px; }
+.w3 { left: 20px; top: 70px; }
+.w4 { right: 20px; top: 70px; }
+
+/* --------------------------------------------------
+   ROAD
+-------------------------------------------------- */
+
+#road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 42%;
+  background: #9e9a96;
+  border-top: 5px solid #514943;
+  clip-path: polygon(
+    38% 0,
+    62% 0,
+    100% 100%,
+    0 100%
+  );
+}
+
+.roadLine {
+  position: absolute;
+  width: 12px;
+  height: 65px;
+  background: #fff4d6;
+  left: calc(50% - 6px);
+  transform-origin: center;
+}
+
+.line1 {
+  top: 5%;
+}
+
+.line2 {
+  top: 38%;
+  transform: scale(1.3);
+}
+
+.line3 {
+  top: 72%;
+  transform: scale(1.8);
+}
+
+/* --------------------------------------------------
+   FIRST PERSON DASHBOARD
+-------------------------------------------------- */
+
+#dashboard {
+  position: absolute;
+  bottom: -5%;
+  left: 0;
+  width: 100%;
+  height: 28%;
+  background: #d8bda9;
+  border-top: 5px solid #514943;
+  border-radius: 50% 50% 0 0;
+  z-index: 20;
+}
+
+#wheel {
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  transform: translateX(-50%);
+  width: 145px;
+  height: 145px;
+  border: 13px solid #514943;
+  border-radius: 50%;
+}
+
+#wheel:before {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 90px;
+  background: #514943;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-5%);
+}
+
+#wheel:after {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 15px;
+  background: #514943;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
+
+/* --------------------------------------------------
+   HUD
+-------------------------------------------------- */
+
+#hud {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 30;
+}
+
+.card {
+  background: #fffaf1;
+  border: 3px solid #514943;
+  border-radius: 15px;
+  padding: 8px 13px;
+  box-shadow: 3px 3px 0 #d1bca9;
+}
+
+#order {
+  max-width: 260px;
+}
+
+#money {
+  font-weight: 700;
+}
+
+#timer {
+  font-weight: 700;
+}
+
+#direction {
+  position: absolute;
+  top: 105px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  background: #fffaf1;
+  border: 3px solid #514943;
+  border-radius: 50px;
+  padding: 8px 18px;
+  font-family: "Patrick Hand", cursive;
+  font-size: 22px;
+}
+
+/* --------------------------------------------------
+   TOUCH CONTROLS
+-------------------------------------------------- */
+
+#controls {
+  position: absolute;
+  bottom: 25px;
+  left: 20px;
+  right: 20px;
+  z-index: 50;
+  display: none;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.controlGroup {
+  display: flex;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.control {
+  width: 70px;
+  height: 60px;
+  border: 3px solid #514943;
+  border-radius: 18px;
+  background: #fffaf1;
+  font-family: "Patrick Hand", cursive;
+  font-size: 24px;
+  box-shadow: 3px 3px 0 #cbb5a4;
+}
+
+.control:active {
+  transform: translateY(2px);
+}
+
+/* --------------------------------------------------
+   DELIVERY
+-------------------------------------------------- */
+
+#deliveryButton {
+  position: absolute;
+  z-index: 60;
+  bottom: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  border: 3px solid #514943;
+  border-radius: 17px;
+  background: #9dbca1;
+  color: white;
+  padding: 12px 25px;
+  font-family: "Patrick Hand", cursive;
+  font-size: 25px;
+  box-shadow: 3px 3px 0 #514943;
+}
+
+#message {
+  position: absolute;
+  z-index: 70;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%,-50%);
+  background: #fffaf1;
+  border: 3px solid #514943;
+  border-radius: 18px;
+  padding: 15px 25px;
+  font-family: "Patrick Hand", cursive;
+  font-size: 26px;
+  text-align: center;
+  display: none;
+}
+
+/* --------------------------------------------------
+   MOBILE
+-------------------------------------------------- */
+
+@media (pointer: coarse) {
+  #controls {
+    display: flex;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .card {
+    font-size: 12px;
+    padding: 7px 9px;
+  }
+
+  #order {
+    max-width: 190px;
+  }
+
+  #wheel {
+    width: 115px;
+    height: 115px;
+  }
+
+  #dashboard {
+    height: 25%;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+  <div id="sky">
+
+    <div class="sun"></div>
+
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+
+  </div>
+
+
+  <div id="city">
+
+    <div class="building">
+      <div class="window w1"></div>
+      <div class="window w2"></div>
+      <div class="window w3"></div>
+      <div class="window w4"></div>
+    </div>
+
+    <div class="building">
+      <div class="window w1"></div>
+      <div class="window w2"></div>
+    </div>
+
+    <div class="building">
+      <div class="window w1"></div>
+      <div class="window w2"></div>
+      <div class="window w3"></div>
+    </div>
+
+    <div class="building">
+      <div class="window w1"></div>
+      <div class="window w2"></div>
+    </div>
+
+    <div class="building">
+      <div class="window w1"></div>
+      <div class="window w2"></div>
+      <div class="window w3"></div>
+    </div>
+
+  </div>
+
+
+  <div id="road">
+
+    <div class="roadLine line1"></div>
+    <div class="roadLine line2"></div>
+    <div class="roadLine line3"></div>
+
+  </div>
+
+
+  <!-- HUD -->
+
+  <div id="hud">
+
+    <div class="card" id="order">
+      📦 Delivery: <strong id="customer">Loading...</strong><br>
+      <span id="address">Finding address...</span>
+    </div>
+
+    <div class="card">
+      💵 $<span id="money">0</span><br>
+      ⏱️ <span id="timer">60</span>s
+    </div>
+
+  </div>
+
+
+  <div id="direction">
+    ↑ Find the customer
+  </div>
+
+
+  <!-- DELIVERY -->
+
+  <button id="deliveryButton"
+          onclick="deliver()">
+    Deliver ♡
+  </button>
+
+
+  <!-- MESSAGE -->
+
+  <div id="message"></div>
+
+
+  <!-- DASHBOARD -->
+
+  <div id="dashboard">
+
+    <div id="wheel"></div>
+
+  </div>
+
+
+  <!-- MOBILE CONTROLS -->
+
+  <div id="controls">
+
+    <div class="controlGroup">
+
+      <button class="control"
+              id="left">
+        ←
+      </button>
+
+      <button class="control"
+              id="right">
+        →
+      </button>
+
+    </div>
+
+    <div class="controlGroup">
+
+      <button class="control"
+              id="brake">
+        ◼
+      </button>
+
+      <button class="control"
+              id="gas">
+        ↑
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==================================================
+   DOODLE DASH
+   ================================================== */
+
+
+/* -----------------------------
+   GAME STATE
+----------------------------- */
+
+let money = 0;
+let speed = 0;
+
+let x = 0;
+let distance = 0;
+
+let targetDistance = 900;
+
+let timeLeft = 60;
+
+let leftPressed = false;
+let rightPressed = false;
+let gasPressed = false;
+let brakePressed = false;
+
+let delivered = false;
+
+
+/* -----------------------------
+   CUSTOMERS
+----------------------------- */
+
+const customers = [
+  {
+    name: "Mia",
+    address: "Maple Street • House 12"
+  },
+  {
+    name: "Lily",
+    address: "Rose Avenue • House 7"
+  },
+  {
+    name: "Noah",
+    address: "Sunny Lane • House 19"
+  },
+  {
+    name: "Emma",
+    address: "Pine Road • House 4"
+  },
+  {
+    name: "Ava",
+    address: "Cloud Street • House 16"
+  }
+];
+
+
+let currentCustomer;
+
+
+/* -----------------------------
+   START DELIVERY
+----------------------------- */
+
+function newDelivery() {
+
+  delivered = false;
+
+  currentCustomer =
+    customers[
+      Math.floor(
+        Math.random() * customers.length
+      )
+    ];
+
+  document.getElementById("customer")
+    .textContent =
+      currentCustomer.name;
+
+  document.getElementById("address")
+    .textContent =
+      currentCustomer.address;
+
+  targetDistance =
+    700 + Math.random() * 700;
+
+  distance = 0;
+
+  timeLeft = 60;
+
+  document.getElementById("timer")
+    .textContent =
+      Math.ceil(timeLeft);
+
+  document.getElementById("direction")
+    .textContent =
+      "↑ Find " + currentCustomer.name;
+
+  startTimer();
+}
+
+
+/* -----------------------------
+   TIMER
+----------------------------- */
+
+let timerInterval;
+
+function startTimer() {
+
+  clearInterval(timerInterval);
+
+  timerInterval =
+    setInterval(() => {
+
+      if (delivered)
+        return;
+
+      timeLeft -= 1;
+
+      document.getElementById("timer")
+        .textContent =
+          Math.max(0, Math.ceil(timeLeft));
+
+      if (timeLeft <= 0) {
+
+        clearInterval(timerInterval);
+
+        showMessage(
+          "You missed the delivery! 😭"
+        );
+
+        setTimeout(newDelivery, 1500);
+
+      }
+
+    }, 1000);
+}
+
+
+/* -----------------------------
+   KEYBOARD
+----------------------------- */
+
+document.addEventListener(
+  "keydown",
+  e => {
+
+    if (
+      e.key === "ArrowLeft" ||
+      e.key.toLowerCase() === "a"
+    ) {
+      leftPressed = true;
+    }
+
+    if (
+      e.key === "ArrowRight" ||
+      e.key.toLowerCase() === "d"
+    ) {
+      rightPressed = true;
+    }
+
+    if (
+      e.key === "ArrowUp" ||
+      e.key.toLowerCase() === "w"
+    ) {
+      gasPressed = true;
+    }
+
+    if (
+      e.key === "ArrowDown" ||
+      e.key.toLowerCase() === "s" ||
+      e.code === "Space"
+    ) {
+      brakePressed = true;
+    }
+
+    if (e.key.toLowerCase() === "e") {
+
+      deliver();
+
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  "keyup",
+  e => {
+
+    if (
+      e.key === "ArrowLeft" ||
+      e.key.toLowerCase() === "a"
+    ) {
+      leftPressed = false;
+    }
+
+    if (
+      e.key === "ArrowRight" ||
+      e.key.toLowerCase() === "d"
+    ) {
+      rightPressed = false;
+    }
+
+    if (
+      e.key === "ArrowUp" ||
+      e.key.toLowerCase() === "w"
+    ) {
+      gasPressed = false;
+    }
+
+    if (
+      e.key === "ArrowDown" ||
+      e.key.toLowerCase() === "s" ||
+      e.code === "Space"
+    ) {
+      brakePressed = false;
+    }
+
+  }
+);
+
+
+/* -----------------------------
+   TOUCH CONTROLS
+----------------------------- */
+
+function holdButton(id, variable) {
+
+  const button =
+    document.getElementById(id);
+
+  button.addEventListener(
+    "pointerdown",
+    e => {
+
+      e.preventDefault();
+
+      if (variable === "left")
+        leftPressed = true;
+
+      if (variable === "right")
+        rightPressed = true;
+
+      if (variable === "gas")
+        gasPressed = true;
+
+      if (variable === "brake")
+        brakePressed = true;
+
+    }
+  );
+
+  button.addEventListener(
+    "pointerup",
+    () => {
+
+      if (variable === "left")
+        leftPressed = false;
+
+      if (variable === "right")
+        rightPressed = false;
+
+      if (variable === "gas")
+        gasPressed = false;
+
+      if (variable === "brake")
+        brakePressed = false;
+
+    }
+  );
+
+  button.addEventListener(
+    "pointercancel",
+    () => {
+
+      if (variable === "left")
+        leftPressed = false;
+
+      if (variable === "right")
+        rightPressed = false;
+
+      if (variable === "gas")
+        gasPressed = false;
+
+      if (variable === "brake")
+        brakePressed = false;
+
+    }
+  );
+}
+
+
+holdButton("left","left");
+holdButton("right","right");
+holdButton("gas","gas");
+holdButton("brake","brake");
+
+
+/* -----------------------------
+   DRIVING
+----------------------------- */
+
+function update() {
+
+  /*
+   * Accelerate
+   */
+
+  if (gasPressed) {
+
+    speed += .16;
+
+  } else {
+
+    speed -= .04;
+
+  }
+
+
+  /*
+   * Brake
+   */
+
+  if (brakePressed) {
+
+    speed -= .25;
+
+  }
+
+
+  speed =
+    Math.max(
+      0,
+      Math.min(speed, 7)
+    );
+
+
+  /*
+   * Steering
+   */
+
+  if (leftPressed) {
+
+    x -= speed * .9;
+
+  }
+
+  if (rightPressed) {
+
+    x += speed * .9;
+
+  }
+
+
+  /*
+   * Keep car on road
+   */
+
+  x =
+    Math.max(
+      -140,
+      Math.min(140, x)
+    );
+
+
+  /*
+   * Distance
+   */
+
+  distance += speed;
+
+
+  /*
+   * Road animation
+   */
+
+  const lines =
+    document.querySelectorAll(".roadLine");
+
+  lines.forEach((line,index) => {
+
+    let offset =
+      (distance * (index + 1) * .8)
+      % 100;
+
+    line.style.top =
+      (offset + index * 30) + "%";
+
+  });
+
+
+  /*
+   * Slight camera movement
+   */
+
+  document.getElementById("game")
+    .style.transform =
+      `translateX(${x * .12}px)`;
+
+
+  /*
+   * Check destination
+   */
+
+  if (
+    distance >= targetDistance &&
+    !delivered
+  ) {
+
+    document.getElementById(
+      "direction"
+    ).textContent =
+      "🏠 You're here!";
+
+    document.getElementById(
+      "deliveryButton"
+    ).style.display =
+      "block";
+
+  }
+
+
+  requestAnimationFrame(update);
+
+}
+
+
+/* -----------------------------
+   DELIVERY
+----------------------------- */
+
+function deliver() {
+
+  if (delivered)
+    return;
+
+  if (distance < targetDistance) {
+
+    showMessage(
+      "You're not at the house yet!"
+    );
+
+    return;
+  }
+
+
+  if (speed > 1.5) {
+
+    showMessage(
+      "Slow down before delivering!"
+    );
+
+    return;
+  }
+
+
+  delivered = true;
+
+  clearInterval(timerInterval);
+
+
+  /*
+   * Tip calculation
+   */
+
+  let base = 6;
+
+  let tip =
+    Math.max(
+      1,
+      Math.round(timeLeft / 8)
+    );
+
+  let earned =
+    base + tip;
+
+  money += earned;
+
+
+  document.getElementById("money")
+    .textContent =
+      money;
+
+
+  document.getElementById(
+    "deliveryButton"
+  ).style.display =
+    "none";
+
+
+  showMessage(
+    "Delivery complete! ♡\n+$" +
+    earned
+  );
+
+
+  setTimeout(() => {
+
+    document.getElementById(
+      "message"
+    ).style.display =
+      "none";
+
+    newDelivery();
+
+  }, 1800);
+
+}
+
+
+/* -----------------------------
+   MESSAGE
+----------------------------- */
+
+function showMessage(text) {
+
+  const message =
+    document.getElementById("message");
+
+  message.innerHTML =
+    text.replace("\n","<br>");
+
+  message.style.display =
+    "block";
+
+  clearTimeout(message.hideTimer);
+
+  message.hideTimer =
+    setTimeout(() => {
+
+      message.style.display =
+        "none";
+
+    }, 1300);
+
+}
+
+
+/* -----------------------------
+   START
+----------------------------- */
+
+newDelivery();
+
+update();
+
+</script>
+
+</body>
+</html>
