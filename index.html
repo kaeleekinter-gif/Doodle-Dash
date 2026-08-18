@@ -3,398 +3,273 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
-      content="width=device-width,initial-scale=1.0,user-scalable=no">
+      content="width=device-width, initial-scale=1.0, user-scalable=no">
 
 <title>Doodle Dash</title>
 
 <style>
-
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@500;600;700&display=swap');
 
 * {
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body {
-  margin:0;
-  overflow:hidden;
-  background:#cfe6df;
-  font-family:Quicksand,sans-serif;
-  color:#51463f;
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #cfe5df;
+  font-family: Quicksand, sans-serif;
+  color: #51463f;
+  touch-action: none;
 }
 
 canvas {
-  width:100vw;
-  height:100vh;
-  display:block;
+  display: block;
+  width: 100vw;
+  height: 100vh;
 }
 
-
-/* ==============================
-   START SCREEN
-================================ */
-
-#startScreen,
-#shopScreen {
-  position:fixed;
-  inset:0;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-
-  background:rgba(207,230,223,.96);
-
-  z-index:100;
-}
-
-.panel {
-  width:min(92vw,520px);
-
-  background:#fffaf0;
-
-  border:4px solid #51463f;
-  border-radius:28px;
-
-  padding:28px;
-
-  text-align:center;
-
-  box-shadow:7px 7px 0 #c2b1a1;
-}
-
-.title {
-  font-family:"Patrick Hand",cursive;
-  font-size:58px;
-  margin:0 0 4px;
-}
-
-.subtitle {
-  margin-top:0;
-  color:#766a62;
-}
-
-.carPreview {
-  width:120px;
-  height:170px;
-
-  margin:20px auto;
-
-  border-radius:30px;
-
-  border:5px solid #51463f;
-
-  position:relative;
-  transition:.2s;
-}
-
-.carPreview::before {
-  content:"";
-
-  position:absolute;
-
-  left:18px;
-  right:18px;
-  top:35px;
-  height:55px;
-
-  background:#b9d9d8;
-
-  border:4px solid #51463f;
-
-  border-radius:15px;
-}
-
-.colorChoices {
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin:20px 0;
-}
-
-.colorButton {
-  width:42px;
-  height:42px;
-
-  border-radius:50%;
-
-  border:3px solid #51463f;
-
-  cursor:pointer;
-}
-
-.startButton,
-.buyButton,
-.closeButton {
-
-  border:3px solid #51463f;
-
-  background:#9abb9e;
-  color:white;
-
-  border-radius:16px;
-
-  padding:12px 25px;
-
-  font-family:"Patrick Hand",cursive;
-
-  font-size:25px;
-
-  box-shadow:3px 3px 0 #51463f;
-
-  cursor:pointer;
-}
-
-.startButton:active,
-.buyButton:active {
-  transform:translateY(2px);
-}
-
-
-/* ==============================
-   HUD
-================================ */
+/* ---------------- HUD ---------------- */
 
 #hud {
-  position:fixed;
-
-  top:14px;
-  left:14px;
-  right:14px;
-
-  display:flex;
-  justify-content:space-between;
-
-  z-index:10;
-
-  pointer-events:none;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 20;
+  pointer-events: none;
 }
 
 .card {
-
-  background:#fffaf0;
-
-  border:3px solid #51463f;
-
-  border-radius:16px;
-
-  padding:9px 13px;
-
-  box-shadow:3px 3px 0 #c8b5a4;
+  background: #fffaf0;
+  border: 3px solid #51463f;
+  border-radius: 16px;
+  padding: 9px 13px;
+  box-shadow: 3px 3px 0 #c8b6a5;
 }
 
 #customer {
-  font-family:"Patrick Hand",cursive;
-  font-size:22px;
+  font-family: "Patrick Hand", cursive;
+  font-size: 22px;
 }
 
 #address {
-  font-size:12px;
+  font-size: 12px;
 }
 
 #direction {
-
-  position:fixed;
-
-  top:105px;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  background:#fffaf0;
-
-  border:3px solid #51463f;
-
-  border-radius:30px;
-
-  padding:8px 18px;
-
-  font-family:"Patrick Hand",cursive;
-
-  font-size:21px;
-
-  z-index:10;
-
-  pointer-events:none;
+  position: fixed;
+  top: 105px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fffaf0;
+  border: 3px solid #51463f;
+  border-radius: 25px;
+  padding: 8px 18px;
+  font-family: "Patrick Hand", cursive;
+  font-size: 21px;
+  z-index: 20;
 }
-
-
-/* ==============================
-   SHOP BUTTON
-================================ */
 
 #shopButton {
+  position: fixed;
+  top: 105px;
+  right: 14px;
+  z-index: 25;
 
-  position:fixed;
+  background: #fffaf0;
+  border: 3px solid #51463f;
+  border-radius: 14px;
+  padding: 8px 13px;
 
-  top:105px;
-  right:14px;
+  font-family: "Patrick Hand", cursive;
+  font-size: 20px;
 
-  z-index:15;
-
-  border:3px solid #51463f;
-
-  background:#fffaf0;
-
-  border-radius:15px;
-
-  padding:8px 13px;
-
-  font-family:"Patrick Hand",cursive;
-
-  font-size:20px;
-
-  box-shadow:3px 3px 0 #c8b5a4;
+  box-shadow: 3px 3px 0 #c8b6a5;
 }
-
-
-/* ==============================
-   DELIVERY BUTTON
-================================ */
 
 #deliver {
+  display: none;
 
-  position:fixed;
+  position: fixed;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
 
-  bottom:125px;
-  left:50%;
+  z-index: 30;
 
-  transform:translateX(-50%);
+  border: 3px solid #51463f;
+  border-radius: 16px;
 
-  display:none;
+  background: #94b89b;
+  color: white;
 
-  z-index:20;
+  padding: 12px 28px;
 
-  border:3px solid #51463f;
+  font-family: "Patrick Hand", cursive;
+  font-size: 25px;
 
-  border-radius:17px;
-
-  background:#93b99c;
-
-  color:white;
-
-  padding:12px 28px;
-
-  font-family:"Patrick Hand",cursive;
-
-  font-size:25px;
-
-  box-shadow:3px 3px 0 #51463f;
+  box-shadow: 3px 3px 0 #51463f;
 }
 
-
-/* ==============================
-   MESSAGE
-================================ */
-
-#message {
-
-  position:fixed;
-
-  top:50%;
-  left:50%;
-
-  transform:translate(-50%,-50%);
-
-  display:none;
-
-  z-index:60;
-
-  background:#fffaf0;
-
-  border:3px solid #51463f;
-
-  border-radius:20px;
-
-  padding:18px 28px;
-
-  font-family:"Patrick Hand",cursive;
-
-  font-size:29px;
-
-  text-align:center;
-
-  box-shadow:5px 5px 0 #c8b5a4;
-}
-
-
-/* ==============================
-   CONTROLS
-================================ */
+/* ---------------- Controls ---------------- */
 
 #controls {
+  position: fixed;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
 
-  position:fixed;
+  display: flex;
+  justify-content: space-between;
 
-  left:18px;
-  right:18px;
-  bottom:18px;
-
-  display:flex;
-  justify-content:space-between;
-
-  z-index:30;
+  z-index: 30;
 }
 
-.group {
-  display:flex;
-  gap:10px;
+.controlGroup {
+  display: flex;
+  gap: 10px;
 }
 
 .control {
+  width: 72px;
+  height: 60px;
 
-  width:75px;
-  height:62px;
+  border: 3px solid #51463f;
+  border-radius: 18px;
 
-  border:3px solid #51463f;
+  background: #fffaf0;
 
-  border-radius:19px;
+  font-family: "Patrick Hand", cursive;
+  font-size: 28px;
 
-  background:#fffaf0;
-
-  font-family:"Patrick Hand",cursive;
-
-  font-size:28px;
-
-  box-shadow:3px 3px 0 #c8b5a4;
+  box-shadow: 3px 3px 0 #c8b6a5;
 }
 
-@media(pointer:fine) {
+.control:active {
+  transform: translateY(2px);
+}
+
+@media (pointer: fine) {
   #controls {
-    display:none;
+    display: none;
   }
 }
 
-@media(max-width:600px) {
+/* ---------------- Start / Shop ---------------- */
 
-  .title {
-    font-size:47px;
-  }
+.overlay {
+  position: fixed;
+  inset: 0;
 
-  .panel {
-    padding:20px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  #customer {
-    font-size:19px;
-  }
+  background: rgba(207, 229, 223, .97);
 
+  z-index: 100;
 }
 
+.panel {
+  width: min(92vw, 500px);
+
+  background: #fffaf0;
+
+  border: 4px solid #51463f;
+  border-radius: 28px;
+
+  padding: 28px;
+
+  text-align: center;
+
+  box-shadow: 7px 7px 0 #c8b6a5;
+}
+
+.title {
+  margin: 0;
+  font-family: "Patrick Hand", cursive;
+  font-size: 58px;
+}
+
+.subtitle {
+  color: #766b63;
+}
+
+.colorChoices {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px;
+}
+
+.colorButton {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+  border: 3px solid #51463f;
+
+  cursor: pointer;
+}
+
+.mainButton {
+  border: 3px solid #51463f;
+  border-radius: 16px;
+
+  padding: 12px 25px;
+
+  background: #94b89b;
+  color: white;
+
+  font-family: "Patrick Hand", cursive;
+  font-size: 25px;
+
+  box-shadow: 3px 3px 0 #51463f;
+}
+
+#message {
+  display: none;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 200;
+
+  background: #fffaf0;
+
+  border: 3px solid #51463f;
+  border-radius: 20px;
+
+  padding: 18px 28px;
+
+  text-align: center;
+
+  font-family: "Patrick Hand", cursive;
+  font-size: 29px;
+
+  box-shadow: 5px 5px 0 #c8b6a5;
+}
 </style>
 </head>
 
-
 <body>
 
+<canvas id="game"></canvas>
 
-<!-- ==============================
-     START SCREEN
-================================ -->
 
-<div id="startScreen">
+<!-- START SCREEN -->
+
+<div class="overlay" id="startScreen">
 
   <div class="panel">
 
@@ -403,50 +278,50 @@ canvas {
     </h1>
 
     <p class="subtitle">
-      Pick your first delivery car ♡
+      Choose your delivery car ♡
     </p>
 
     <div
       id="preview"
-      class="carPreview">
+      style="
+        width:90px;
+        height:130px;
+        margin:20px auto;
+        border:5px solid #51463f;
+        border-radius:25px;
+        background:#e99d92;
+      ">
     </div>
 
     <div class="colorChoices">
 
       <button class="colorButton"
-              style="background:#e99d92"
-              onclick="chooseColor('#e99d92')">
-      </button>
+        style="background:#e99d92"
+        onclick="chooseColor('#e99d92')"></button>
 
       <button class="colorButton"
-              style="background:#9db9df"
-              onclick="chooseColor('#9db9df')">
-      </button>
+        style="background:#9db9df"
+        onclick="chooseColor('#9db9df')"></button>
 
       <button class="colorButton"
-              style="background:#a9c99f"
-              onclick="chooseColor('#a9c99f')">
-      </button>
+        style="background:#a9c99f"
+        onclick="chooseColor('#a9c99f')"></button>
 
       <button class="colorButton"
-              style="background:#d5b2dc"
-              onclick="chooseColor('#d5b2dc')">
-      </button>
+        style="background:#d7b4df"
+        onclick="chooseColor('#d7b4df')"></button>
 
       <button class="colorButton"
-              style="background:#f0c77b"
-              onclick="chooseColor('#f0c77b')">
-      </button>
+        style="background:#efc878"
+        onclick="chooseColor('#efc878')"></button>
 
       <button class="colorButton"
-              style="background:#e8e8df"
-              onclick="chooseColor('#e8e8df')">
-      </button>
+        style="background:#eee9dc"
+        onclick="chooseColor('#eee9dc')"></button>
 
     </div>
 
-    <button class="startButton"
-            onclick="startGame()">
+    <button class="mainButton" onclick="startGame()">
       Start Driving ♡
     </button>
 
@@ -455,63 +330,53 @@ canvas {
 </div>
 
 
-<!-- ==============================
-     SHOP
-================================ -->
+<!-- SHOP -->
 
-<div id="shopScreen" style="display:none">
+<div class="overlay" id="shopScreen" style="display:none">
 
   <div class="panel">
 
     <h1 class="title">
-      Little Car Shop
+      Car Shop
     </h1>
 
     <p>
-      Money:
       💵 $<span id="shopMoney">0</span>
     </p>
 
     <div class="colorChoices">
 
       <button class="colorButton"
-              style="background:#e99d92"
-              onclick="buyCar('#e99d92',0)">
-      </button>
+        style="background:#e99d92"
+        onclick="buyCar('#e99d92',0)"></button>
 
       <button class="colorButton"
-              style="background:#9db9df"
-              onclick="buyCar('#9db9df',25)">
-      </button>
+        style="background:#9db9df"
+        onclick="buyCar('#9db9df',25)"></button>
 
       <button class="colorButton"
-              style="background:#a9c99f"
-              onclick="buyCar('#a9c99f',35)">
-      </button>
+        style="background:#a9c99f"
+        onclick="buyCar('#a9c99f',35)"></button>
 
       <button class="colorButton"
-              style="background:#d5b2dc"
-              onclick="buyCar('#d5b2dc',50)">
-      </button>
+        style="background:#d7b4df"
+        onclick="buyCar('#d7b4df',50)"></button>
 
       <button class="colorButton"
-              style="background:#f0c77b"
-              onclick="buyCar('#f0c77b',75)">
-      </button>
+        style="background:#efc878"
+        onclick="buyCar('#efc878',75)"></button>
 
       <button class="colorButton"
-              style="background:#e8e8df"
-              onclick="buyCar('#e8e8df',100)">
-      </button>
+        style="background:#eee9dc"
+        onclick="buyCar('#eee9dc',100)"></button>
 
     </div>
 
-    <p style="font-family:'Patrick Hand';font-size:20px">
-      New colors cost more as you unlock them!
+    <p>
+      Unlock cute new car colors with your delivery money!
     </p>
 
-    <button class="closeButton"
-            onclick="closeShop()">
+    <button class="mainButton" onclick="closeShop()">
       Back to driving
     </button>
 
@@ -520,16 +385,14 @@ canvas {
 </div>
 
 
-<!-- ==============================
-     HUD
-================================ -->
+<!-- HUD -->
 
 <div id="hud">
 
   <div class="card">
 
     <div id="customer">
-      Delivery
+      📦 Delivery
     </div>
 
     <div id="address">
@@ -552,58 +415,46 @@ canvas {
 
 
 <div id="direction">
-  Find your customer ↑
+  ↑ Find your customer
 </div>
 
 
-<button id="shopButton"
-        onclick="openShop()">
-
+<button id="shopButton" onclick="openShop()">
   🚗 Cars
-
 </button>
 
 
-<button id="deliver"
-        onclick="deliver()">
-
+<button id="deliver" onclick="deliver()">
   Deliver ♡
-
 </button>
 
 
 <div id="message"></div>
 
 
-<!-- ==============================
-     PHONE CONTROLS
-================================ -->
+<!-- MOBILE CONTROLS -->
 
 <div id="controls">
 
-  <div class="group">
+  <div class="controlGroup">
 
-    <button class="control"
-            id="left">
+    <button class="control" id="left">
       ←
     </button>
 
-    <button class="control"
-            id="right">
+    <button class="control" id="right">
       →
     </button>
 
   </div>
 
-  <div class="group">
+  <div class="controlGroup">
 
-    <button class="control"
-            id="brake">
+    <button class="control" id="brake">
       ↓
     </button>
 
-    <button class="control"
-            id="gas">
+    <button class="control" id="gas">
       ↑
     </button>
 
@@ -612,295 +463,229 @@ canvas {
 </div>
 
 
-<canvas id="game"></canvas>
-
-
 <script>
 
-
-/* =====================================================
+/* =========================================================
    CANVAS
-===================================================== */
+========================================================= */
 
-const canvas =
-  document.getElementById("game");
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-const ctx =
-  canvas.getContext("2d");
-
-let W,H;
+let W, H;
 
 function resize() {
 
-  W =
-    canvas.width =
-    innerWidth;
-
-  H =
-    canvas.height =
-    innerHeight;
+  W = canvas.width = innerWidth;
+  H = canvas.height = innerHeight;
 
 }
 
-addEventListener(
-  "resize",
-  resize
-);
-
+addEventListener("resize", resize);
 resize();
 
 
-/* =====================================================
-   CAR
-===================================================== */
+/* =========================================================
+   PLAYER
+========================================================= */
 
 const car = {
 
-  x:0,
-  y:0,
+  x: 0,
+  y: 0,
 
-  angle:0,
+  angle: 0,
 
-  speed:0,
+  speed: 0,
 
-  color:"#e99d92",
+  maxSpeed: 5.8,
 
-  maxSpeed:6
+  color: "#e99d92"
 
 };
 
 
-/* =====================================================
+/* =========================================================
    CAMERA
-===================================================== */
+========================================================= */
 
 const camera = {
 
-  x:0,
-  y:0
+  x: 0,
+  y: 0,
+
+  shake: 0
 
 };
 
 
-/* =====================================================
+/* =========================================================
    INPUT
-===================================================== */
+========================================================= */
 
 const keys = {};
 
-addEventListener(
-  "keydown",
-  e => {
+addEventListener("keydown", e => {
 
-    keys[
-      e.key.toLowerCase()
-    ] = true;
+  keys[e.key.toLowerCase()] = true;
 
-    if (
-      ["w","a","s","d",
-       "arrowup",
-       "arrowdown",
-       "arrowleft",
-       "arrowright"]
-      .includes(
-        e.key.toLowerCase()
-      )
-    )
-      e.preventDefault();
+});
 
-    if (
-      e.key.toLowerCase()==="e"
-    )
-      deliver();
+addEventListener("keyup", e => {
 
-  }
-);
+  keys[e.key.toLowerCase()] = false;
 
-addEventListener(
-  "keyup",
-  e => {
-
-    keys[
-      e.key.toLowerCase()
-    ] = false;
-
-  }
-);
+});
 
 
-function button(id,key) {
+function mobileButton(id, key) {
 
-  const b =
-    document.getElementById(id);
+  const button = document.getElementById(id);
 
-  b.addEventListener(
-    "pointerdown",
-    e => {
+  button.addEventListener("pointerdown", e => {
 
-      e.preventDefault();
+    e.preventDefault();
 
-      keys[key]=true;
+    keys[key] = true;
 
-    }
-  );
+  });
 
-  b.addEventListener(
-    "pointerup",
-    () => {
-      keys[key]=false;
-    }
-  );
+  button.addEventListener("pointerup", () => {
 
-  b.addEventListener(
-    "pointercancel",
-    () => {
-      keys[key]=false;
-    }
-  );
+    keys[key] = false;
 
-}
+  });
 
-button(
-  "left",
-  "arrowleft"
-);
+  button.addEventListener("pointercancel", () => {
 
-button(
-  "right",
-  "arrowright"
-);
-
-button(
-  "gas",
-  "arrowup"
-);
-
-button(
-  "brake",
-  "arrowdown"
-);
-
-
-/* =====================================================
-   WORLD
-===================================================== */
-
-const streetsX =
-  [-900,-600,-300,0,300,600,900];
-
-const streetsY =
-  [-900,-600,-300,0,300,600,900];
-
-const roadWidth=105;
-
-const houses=[];
-const trees=[];
-
-
-const houseColors=[
-  "#efc5bb",
-  "#e8d7aa",
-  "#c7ddc2",
-  "#d9c7e5",
-  "#e8c9a6",
-  "#c5dce1"
-];
-
-
-/* =====================================================
-   HOUSES
-===================================================== */
-
-for(
-  let x=-1050;
-  x<=1050;
-  x+=150
-) {
-
-  for(
-    let y=-1050;
-    y<=1050;
-    y+=150
-  ) {
-
-    const roadX =
-      streetsX.some(
-        s =>
-        Math.abs(x-s)<80
-      );
-
-    const roadY =
-      streetsY.some(
-        s =>
-        Math.abs(y-s)<80
-      );
-
-    if(
-      roadX ||
-      roadY
-    )
-      continue;
-
-    houses.push({
-
-      x,
-      y,
-
-      width:76,
-      height:62,
-
-      color:
-        houseColors[
-          Math.floor(
-            Math.random() *
-            houseColors.length
-          )
-        ],
-
-      roof:
-        Math.random()>.5
-        ? "#bd8079"
-        : "#7c7890"
-
-    });
-
-  }
-
-}
-
-
-/* =====================================================
-   TREES
-===================================================== */
-
-for(
-  let i=0;
-  i<130;
-  i++
-) {
-
-  trees.push({
-
-    x:
-      Math.random()*2100-1050,
-
-    y:
-      Math.random()*2100-1050,
-
-    size:
-      15+
-      Math.random()*12
+    keys[key] = false;
 
   });
 
 }
 
+mobileButton("left", "arrowleft");
+mobileButton("right", "arrowright");
+mobileButton("gas", "arrowup");
+mobileButton("brake", "arrowdown");
 
-/* =====================================================
+
+/* =========================================================
+   CITY
+========================================================= */
+
+const roadX = [-900,-600,-300,0,300,600,900];
+const roadY = [-900,-600,-300,0,300,600,900];
+
+const roadWidth = 100;
+
+const houses = [];
+const trees = [];
+
+
+/*
+  IMPORTANT:
+
+  Houses and trees are created only inside
+  neighborhood blocks.
+
+  Nothing randomly spawns on the roads.
+*/
+
+
+const houseColors = [
+  "#efc5bb",
+  "#e8d7aa",
+  "#c7ddc2",
+  "#d8c6e4",
+  "#e8c8a5",
+  "#c4dce0"
+];
+
+
+/* =========================================================
+   CREATE BLOCKS
+========================================================= */
+
+for (let bx = -1050; bx <= 900; bx += 300) {
+
+  for (let by = -1050; by <= 900; by += 300) {
+
+    /*
+      Four houses per block.
+    */
+
+    const positions = [
+
+      [bx + 70, by + 70],
+      [bx + 230, by + 70],
+      [bx + 70, by + 230],
+      [bx + 230, by + 230]
+
+    ];
+
+    positions.forEach(([x,y]) => {
+
+      houses.push({
+
+        x,
+        y,
+
+        color:
+          houseColors[
+            Math.floor(
+              Math.random() *
+              houseColors.length
+            )
+          ],
+
+        roof:
+          Math.random() > .5
+            ? "#bd8079"
+            : "#77748b"
+
+      });
+
+    });
+
+
+    /*
+      Trees are placed beside houses,
+      not on roads.
+    */
+
+    for (let i = 0; i < 5; i++) {
+
+      trees.push({
+
+        x:
+          bx +
+          30 +
+          Math.random()*240,
+
+        y:
+          by +
+          30 +
+          Math.random()*240,
+
+        size:
+          14 +
+          Math.random()*10
+
+      });
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
    CUSTOMERS
-===================================================== */
+========================================================= */
 
-const customers=[
+const customers = [
 
   ["Mia","Maple Street"],
   ["Lily","Rose Avenue"],
@@ -916,57 +701,49 @@ const customers=[
 let customer;
 let target;
 
-let money=0;
+let money = 0;
+let time = 60;
 
-let time=60;
-
-let done=false;
-
+let deliveryDone = false;
 let timer;
 
 
-/* =====================================================
-   START CAR COLOR
-===================================================== */
+/* =========================================================
+   START
+========================================================= */
 
 function chooseColor(color) {
 
-  car.color=color;
+  car.color = color;
 
-  document
-    .getElementById("preview")
-    .style.background=color;
+  document.getElementById("preview")
+    .style.background = color;
 
 }
 
 
-/* =====================================================
-   START GAME
-===================================================== */
-
 function startGame() {
 
-  document
-    .getElementById("startScreen")
-    .style.display="none";
+  document.getElementById("startScreen")
+    .style.display = "none";
 
   newOrder();
 
 }
 
 
-/* =====================================================
-   NEW DELIVERY
-===================================================== */
+/* =========================================================
+   ORDER
+========================================================= */
 
 function newOrder() {
 
-  done=false;
+  deliveryDone = false;
 
   customer =
     customers[
       Math.floor(
-        Math.random()*
+        Math.random() *
         customers.length
       )
     ];
@@ -974,74 +751,97 @@ function newOrder() {
   target =
     houses[
       Math.floor(
-        Math.random()*
+        Math.random() *
         houses.length
       )
     ];
 
-  time=60;
+  time = 60;
 
-  document
-    .getElementById("customer")
-    .textContent=
-      "📦 Delivery for "+
+  document.getElementById("customer")
+    .textContent =
+      "📦 Delivery for " +
       customer[0];
 
-  document
-    .getElementById("address")
-    .textContent=
-      customer[1]+
-      " • House "+
-      Math.floor(
-        Math.random()*20+1
-      );
+  document.getElementById("address")
+    .textContent =
+      customer[1];
+
+  document.getElementById("deliver")
+    .style.display = "none";
 
   clearInterval(timer);
 
-  timer=setInterval(
-    () => {
+  timer = setInterval(() => {
 
-      if(done)
-        return;
+    if (deliveryDone) return;
 
-      time--;
+    time--;
 
-      document
-        .getElementById("timer")
-        .textContent=
-          Math.max(0,time);
+    document.getElementById("timer")
+      .textContent =
+        Math.max(0,time);
 
-      if(time<=0) {
+    if (time <= 0) {
 
-        clearInterval(timer);
+      clearInterval(timer);
 
-        showMessage(
-          "Too late! 😭"
-        );
+      showMessage(
+        "You ran out of time! 😭"
+      );
 
-        setTimeout(
-          newOrder,
-          1500
-        );
+      setTimeout(newOrder, 1500);
 
-      }
+    }
 
-    },
-    1000
-  );
+  },1000);
 
 }
 
 
-/* =====================================================
-   COLLISION DETECTION
-===================================================== */
+/* =========================================================
+   ROAD CHECK
+========================================================= */
 
-let crashCooldown=0;
+
+/*
+  Returns true when the car is on a road.
+
+  This makes the world feel more like
+  an actual neighborhood instead of
+  letting the player drive everywhere.
+*/
+
+function onRoad(x,y) {
+
+  for (const r of roadX) {
+
+    if (Math.abs(x-r) < roadWidth/2)
+      return true;
+
+  }
+
+  for (const r of roadY) {
+
+    if (Math.abs(y-r) < roadWidth/2)
+      return true;
+
+  }
+
+  return false;
+
+}
+
+
+/* =========================================================
+   COLLISIONS
+========================================================= */
+
+let crashCooldown = 0;
 
 function checkCollision() {
 
-  if(crashCooldown>0) {
+  if (crashCooldown > 0) {
 
     crashCooldown--;
 
@@ -1051,23 +851,18 @@ function checkCollision() {
 
 
   /*
-    Check houses.
+    Houses.
   */
 
-  for(
-    const house of houses
-  ) {
-
-    const dx =
-      car.x-house.x;
-
-    const dy =
-      car.y-house.y;
+  for (const house of houses) {
 
     const distance =
-      Math.hypot(dx,dy);
+      Math.hypot(
+        car.x-house.x,
+        car.y-house.y
+      );
 
-    if(distance<48) {
+    if (distance < 48) {
 
       crash(
         "BONK! You hit a house! 🏠"
@@ -1081,29 +876,24 @@ function checkCollision() {
 
 
   /*
-    Check trees.
+    Trees.
   */
 
-  for(
-    const tree of trees
-  ) {
-
-    const dx =
-      car.x-tree.x;
-
-    const dy =
-      car.y-tree.y;
+  for (const tree of trees) {
 
     const distance =
-      Math.hypot(dx,dy);
+      Math.hypot(
+        car.x-tree.x,
+        car.y-tree.y
+      );
 
-    if(
-      distance<
-      tree.size+22
+    if (
+      distance <
+      tree.size + 20
     ) {
 
       crash(
-        "BONK! Watch the trees! 🌳"
+        "BONK! You hit a tree! 🌳"
       );
 
       return;
@@ -1115,64 +905,44 @@ function checkCollision() {
 }
 
 
-/* =====================================================
-   CRASH
-===================================================== */
-
 function crash(text) {
 
-  crashCooldown=30;
+  crashCooldown = 35;
+
+  car.speed = 0;
 
   /*
-    Push the car backwards.
+    Push the car backward.
   */
 
   car.x -=
-    Math.sin(car.angle)*25;
+    Math.sin(car.angle) * 25;
 
   car.y +=
-    Math.cos(car.angle)*25;
-
-
-  /*
-    Stop car.
-  */
-
-  car.speed=0;
-
+    Math.cos(car.angle) * 25;
 
   /*
-    Small money penalty.
+    Crash costs $1.
   */
 
-  if(money>0)
-    money=Math.max(
-      0,
-      money-1
-    );
+  if (money > 0)
+    money--;
 
+  document.getElementById("money")
+    .textContent = money;
 
-  document
-    .getElementById("money")
-    .textContent=
-      money;
+  camera.shake = 12;
 
-
-  showMessage(text+"<br>-$1");
-
-
-  /*
-    Tiny camera shake.
-  */
-
-  camera.shake=12;
+  showMessage(
+    text + "<br>-$1"
+  );
 
 }
 
 
-/* =====================================================
-   DRIVE
-===================================================== */
+/* =========================================================
+   DRIVING
+========================================================= */
 
 function drive() {
 
@@ -1194,32 +964,32 @@ function drive() {
 
 
   /*
-    Acceleration.
+    Accelerate.
   */
 
-  if(gas) {
+  if (gas) {
 
-    car.speed+=.16;
+    car.speed += .15;
 
   } else {
 
-    car.speed*=.96;
+    car.speed *= .965;
 
   }
 
 
   /*
-    Reverse / brake.
+    Brake / reverse.
   */
 
-  if(brake) {
+  if (brake) {
 
-    car.speed-=.22;
+    car.speed -= .20;
 
   }
 
 
-  car.speed=
+  car.speed =
     Math.max(
       -2,
       Math.min(
@@ -1230,120 +1000,129 @@ function drive() {
 
 
   /*
-    Easy steering.
+    Steering.
   */
 
-  if(
-    Math.abs(car.speed)>.15
-  ) {
+  if (Math.abs(car.speed) > .1) {
 
-    if(left)
-      car.angle-=.045;
+    if (left)
+      car.angle -= .045;
 
-    if(right)
-      car.angle+=.045;
+    if (right)
+      car.angle += .045;
 
   }
 
 
   /*
-    Movement.
+    Save previous position.
+
+    This lets us stop the car if it
+    hits something.
   */
 
+  const oldX = car.x;
+  const oldY = car.y;
+
+
   car.x +=
-    Math.sin(car.angle)*
+    Math.sin(car.angle) *
     car.speed;
 
   car.y +=
-    -Math.cos(car.angle)*
+    -Math.cos(car.angle) *
     car.speed;
 
 
   /*
-    World limits.
+    Keep the player inside the city.
   */
 
-  car.x=
+  car.x =
     Math.max(
-      -1100,
-      Math.min(
-        1100,
-        car.x
-      )
+      -1150,
+      Math.min(1150,car.x)
     );
 
-  car.y=
+  car.y =
     Math.max(
-      -1100,
-      Math.min(
-        1100,
-        car.y
-      )
+      -1150,
+      Math.min(1150,car.y)
     );
 
+
+  /*
+    Collision.
+  */
 
   checkCollision();
 
 }
 
 
-/* =====================================================
+/* =========================================================
    CAMERA
-===================================================== */
+========================================================= */
 
 function updateCamera() {
 
-  const distance=170;
+  /*
+    Camera is behind and above the car.
 
-  let desiredX=
-    car.x-
-    Math.sin(car.angle)*
-    distance;
+    This is the third-person Roblox-like
+    perspective rather than bird's-eye.
+  */
 
-  let desiredY=
-    car.y+
-    Math.cos(car.angle)*
-    distance;
+  const followDistance = 155;
+
+  const desiredX =
+    car.x -
+    Math.sin(car.angle) *
+    followDistance;
+
+  const desiredY =
+    car.y +
+    Math.cos(car.angle) *
+    followDistance;
 
 
-  camera.x+=
-    (desiredX-camera.x)*
+  camera.x +=
+    (desiredX-camera.x) *
     .09;
 
-  camera.y+=
-    (desiredY-camera.y)*
+  camera.y +=
+    (desiredY-camera.y) *
     .09;
 
 
-  if(camera.shake>0) {
+  /*
+    Crash shake.
+  */
+
+  if (camera.shake > 0) {
 
     camera.x +=
-      (Math.random()-.5)*
+      (Math.random()-.5) *
       camera.shake;
 
     camera.y +=
-      (Math.random()-.5)*
+      (Math.random()-.5) *
       camera.shake;
 
-    camera.shake*=.8;
-
-    if(camera.shake<.5)
-      camera.shake=0;
+    camera.shake *= .8;
 
   }
 
 }
 
 
-/* =====================================================
-   DRAW WORLD
-===================================================== */
+/* =========================================================
+   DRAW CITY
+========================================================= */
 
 function drawWorld() {
 
-  ctx.clearRect(
-    0,0,W,H
-  );
+  ctx.clearRect(0,0,W,H);
 
 
   ctx.save();
@@ -1355,10 +1134,10 @@ function drawWorld() {
 
 
   /*
-    Grass.
+    GRASS
   */
 
-  ctx.fillStyle="#b8d2ad";
+  ctx.fillStyle = "#b8d2ad";
 
   ctx.fillRect(
     -1300,
@@ -1369,21 +1148,43 @@ function drawWorld() {
 
 
   /*
-    Roads.
+    SIDEWALKS
   */
 
-  streetsX.forEach(x => {
+  roadX.forEach(x => {
 
-    ctx.fillStyle="#d9d1c7";
+    ctx.fillStyle = "#d8d0c5";
 
     ctx.fillRect(
-      x-64,
+      x-62,
       -1300,
-      128,
+      124,
       2600
     );
 
-    ctx.fillStyle="#989794";
+  });
+
+  roadY.forEach(y => {
+
+    ctx.fillStyle = "#d8d0c5";
+
+    ctx.fillRect(
+      -1300,
+      y-62,
+      2600,
+      124
+    );
+
+  });
+
+
+  /*
+    ROADS
+  */
+
+  roadX.forEach(x => {
+
+    ctx.fillStyle = "#8e8c89";
 
     ctx.fillRect(
       x-50,
@@ -1394,19 +1195,9 @@ function drawWorld() {
 
   });
 
+  roadY.forEach(y => {
 
-  streetsY.forEach(y => {
-
-    ctx.fillStyle="#d9d1c7";
-
-    ctx.fillRect(
-      -1300,
-      y-64,
-      2600,
-      128
-    );
-
-    ctx.fillStyle="#989794";
+    ctx.fillStyle = "#8e8c89";
 
     ctx.fillRect(
       -1300,
@@ -1419,44 +1210,30 @@ function drawWorld() {
 
 
   /*
-    Road markings.
+    CENTER LINES
   */
 
-  ctx.strokeStyle="#eee2c8";
+  ctx.strokeStyle = "#eee3c8";
+  ctx.lineWidth = 4;
+  ctx.setLineDash([25,25]);
 
-  ctx.lineWidth=4;
-
-  ctx.setLineDash(
-    [25,25]
-  );
-
-  streetsX.forEach(x => {
+  roadX.forEach(x => {
 
     ctx.beginPath();
 
-    ctx.moveTo(
-      x,-1300
-    );
-
-    ctx.lineTo(
-      x,1300
-    );
+    ctx.moveTo(x,-1300);
+    ctx.lineTo(x,1300);
 
     ctx.stroke();
 
   });
 
-  streetsY.forEach(y => {
+  roadY.forEach(y => {
 
     ctx.beginPath();
 
-    ctx.moveTo(
-      -1300,y
-    );
-
-    ctx.lineTo(
-      1300,y
-    );
+    ctx.moveTo(-1300,y);
+    ctx.lineTo(1300,y);
 
     ctx.stroke();
 
@@ -1466,33 +1243,59 @@ function drawWorld() {
 
 
   /*
-    Trees.
+    CROSSWALKS
+  */
+
+  roadX.forEach(x => {
+
+    roadY.forEach(y => {
+
+      ctx.fillStyle = "#e9e3d8";
+
+      for (let i=-35;i<=35;i+=14) {
+
+        ctx.fillRect(
+          x+i,
+          y-62,
+          8,
+          12
+        );
+
+      }
+
+    });
+
+  });
+
+
+  /*
+    TREES
   */
 
   trees.forEach(tree => {
 
-    if(
-      Math.abs(
-        tree.x-camera.x
-      )>800 ||
-      Math.abs(
-        tree.y-camera.y
-      )>650
+    /*
+      Only draw nearby trees.
+    */
+
+    if (
+      Math.abs(tree.x-camera.x)>850 ||
+      Math.abs(tree.y-camera.y)>650
     )
       return;
 
 
-    ctx.fillStyle="#75614f";
+    ctx.fillStyle = "#75614f";
 
     ctx.fillRect(
       tree.x-3,
       tree.y,
       6,
-      22
+      20
     );
 
 
-    ctx.fillStyle="#789b71";
+    ctx.fillStyle = "#789b71";
 
     ctx.beginPath();
 
@@ -1506,182 +1309,178 @@ function drawWorld() {
 
     ctx.fill();
 
-    ctx.strokeStyle="#51463f";
-
-    ctx.lineWidth=3;
-
+    ctx.strokeStyle = "#51463f";
+    ctx.lineWidth = 3;
     ctx.stroke();
 
   });
 
 
   /*
-    Houses.
+    HOUSES
   */
 
-  houses.forEach(
-    house => {
+  houses.forEach(house => {
 
-      if(
-        Math.abs(
-          house.x-camera.x
-        )>850 ||
-        Math.abs(
-          house.y-camera.y
-        )>650
-      )
-        return;
+    if (
+      Math.abs(house.x-camera.x)>850 ||
+      Math.abs(house.y-camera.y)>650
+    )
+      return;
 
 
-      ctx.fillStyle=
-        house.color;
+    /*
+      Small driveway.
+    */
 
-      ctx.strokeStyle=
-        "#51463f";
+    ctx.fillStyle = "#bcb6ac";
 
-      ctx.lineWidth=4;
-
-
-      ctx.fillRect(
-        house.x-38,
-        house.y-30,
-        76,
-        62
-      );
-
-      ctx.strokeRect(
-        house.x-38,
-        house.y-30,
-        76,
-        62
-      );
+    ctx.fillRect(
+      house.x-15,
+      house.y+28,
+      30,
+      50
+    );
 
 
-      /*
-        Roof.
-      */
+    /*
+      House body.
+    */
 
-      ctx.fillStyle=
-        house.roof;
+    ctx.fillStyle = house.color;
 
-      ctx.beginPath();
+    ctx.strokeStyle = "#51463f";
 
-      ctx.moveTo(
-        house.x-48,
-        house.y-30
-      );
+    ctx.lineWidth = 4;
 
-      ctx.lineTo(
-        house.x,
-        house.y-70
-      );
+    ctx.fillRect(
+      house.x-38,
+      house.y-30,
+      76,
+      62
+    );
 
-      ctx.lineTo(
-        house.x+48,
-        house.y-30
-      );
-
-      ctx.closePath();
-
-      ctx.fill();
-      ctx.stroke();
+    ctx.strokeRect(
+      house.x-38,
+      house.y-30,
+      76,
+      62
+    );
 
 
-      /*
-        Door.
-      */
+    /*
+      Roof.
+    */
 
-      ctx.fillStyle=
-        "#a77763";
+    ctx.fillStyle = house.roof;
 
-      ctx.fillRect(
-        house.x-9,
-        house.y+3,
-        18,
-        29
-      );
+    ctx.beginPath();
 
-      ctx.strokeRect(
-        house.x-9,
-        house.y+3,
-        18,
-        29
-      );
+    ctx.moveTo(
+      house.x-48,
+      house.y-30
+    );
+
+    ctx.lineTo(
+      house.x,
+      house.y-70
+    );
+
+    ctx.lineTo(
+      house.x+48,
+      house.y-30
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+    ctx.stroke();
 
 
-      /*
-        Windows.
-      */
+    /*
+      Door.
+    */
 
-      ctx.fillStyle=
-        "#f6e5a9";
+    ctx.fillStyle = "#a77763";
 
-      ctx.fillRect(
-        house.x-29,
-        house.y-18,
-        17,
-        17
-      );
+    ctx.fillRect(
+      house.x-9,
+      house.y+3,
+      18,
+      29
+    );
 
-      ctx.fillRect(
-        house.x+12,
-        house.y-18,
-        17,
-        17
-      );
+    ctx.strokeRect(
+      house.x-9,
+      house.y+3,
+      18,
+      29
+    );
 
-    }
-  );
+
+    /*
+      Windows.
+    */
+
+    ctx.fillStyle = "#f6e5a9";
+
+    ctx.fillRect(
+      house.x-29,
+      house.y-18,
+      17,
+      17
+    );
+
+    ctx.fillRect(
+      house.x+12,
+      house.y-18,
+      17,
+      17
+    );
+
+  });
 
 
   /*
-    Destination.
+    DELIVERY MARKER
   */
 
-  if(
-    target &&
-    !done
-  ) {
+  if (target && !deliveryDone) {
 
-    const d=
+    const distance =
       Math.hypot(
         target.x-car.x,
         target.y-car.y
       );
 
+    if (distance < 650) {
 
-    if(d<650) {
-
-      ctx.strokeStyle=
-        "#df8b82";
-
-      ctx.lineWidth=5;
+      ctx.strokeStyle = "#df8b82";
+      ctx.lineWidth = 5;
 
       ctx.beginPath();
 
       ctx.arc(
         target.x,
         target.y-90,
-        17,
+        18,
         0,
         Math.PI*2
       );
 
       ctx.stroke();
 
+      ctx.fillStyle = "#df8b82";
 
-      ctx.fillStyle=
-        "#df8b82";
-
-      ctx.font=
+      ctx.font =
         "bold 22px Patrick Hand";
 
-      ctx.textAlign="center";
+      ctx.textAlign = "center";
 
       ctx.fillText(
-        "DROP OFF",
+        "DELIVER",
         target.x,
-        target.y-115
+        target.y-118
       );
 
     }
@@ -1689,16 +1488,21 @@ function drawWorld() {
   }
 
 
+  /*
+    CAR
+  */
+
   drawCar();
+
 
   ctx.restore();
 
 }
 
 
-/* =====================================================
-   CAR DRAWING
-===================================================== */
+/* =========================================================
+   DRAW CAR
+========================================================= */
 
 function drawCar() {
 
@@ -1709,25 +1513,23 @@ function drawCar() {
     car.y
   );
 
-  ctx.rotate(
-    car.angle
-  );
+  ctx.rotate(car.angle);
 
 
   /*
     Shadow.
   */
 
-  ctx.fillStyle=
-    "rgba(60,50,40,.22)";
+  ctx.fillStyle =
+    "rgba(50,45,40,.25)";
 
   ctx.beginPath();
 
   ctx.ellipse(
     0,
-    9,
-    28,
-    45,
+    10,
+    29,
+    47,
     0,
     0,
     Math.PI*2
@@ -1740,26 +1542,26 @@ function drawCar() {
     Wheels.
   */
 
-  ctx.fillStyle="#4e4742";
+  ctx.fillStyle = "#4d4742";
 
   ctx.fillRect(
-    -28,-23,
-    8,20
+    -28,-24,
+    9,21
   );
 
   ctx.fillRect(
-    20,-23,
-    8,20
+    19,-24,
+    9,21
   );
 
   ctx.fillRect(
     -28,8,
-    8,20
+    9,21
   );
 
   ctx.fillRect(
-    20,8,
-    8,20
+    19,8,
+    9,21
   );
 
 
@@ -1767,22 +1569,20 @@ function drawCar() {
     Body.
   */
 
-  ctx.fillStyle=
-    car.color;
+  ctx.fillStyle = car.color;
 
-  ctx.strokeStyle=
-    "#51463f";
+  ctx.strokeStyle = "#51463f";
 
-  ctx.lineWidth=4;
+  ctx.lineWidth = 4;
 
   ctx.beginPath();
 
   ctx.roundRect(
-    -23,
-    -35,
-    46,
-    70,
-    13
+    -24,
+    -37,
+    48,
+    74,
+    14
   );
 
   ctx.fill();
@@ -1793,16 +1593,13 @@ function drawCar() {
     Roof.
   */
 
-  ctx.fillStyle=
-    car.color;
-
   ctx.beginPath();
 
   ctx.roundRect(
     -18,
     -17,
     36,
-    36,
+    39,
     9
   );
 
@@ -1814,8 +1611,7 @@ function drawCar() {
     Windows.
   */
 
-  ctx.fillStyle=
-    "#b8d7d7";
+  ctx.fillStyle = "#b9d8d7";
 
   ctx.beginPath();
 
@@ -1823,7 +1619,7 @@ function drawCar() {
     -15,
     -14,
     30,
-    19,
+    20,
     5
   );
 
@@ -1835,7 +1631,7 @@ function drawCar() {
 
   ctx.roundRect(
     -14,
-    7,
+    8,
     28,
     11,
     4
@@ -1849,20 +1645,21 @@ function drawCar() {
     Headlights.
   */
 
-  ctx.fillStyle=
-    "#f5df8c";
+  ctx.fillStyle = "#f5df8c";
 
   ctx.beginPath();
 
   ctx.arc(
-    -14,-31,
+    -14,
+    -32,
     5,
     0,
     Math.PI*2
   );
 
   ctx.arc(
-    14,-31,
+    14,
+    -32,
     5,
     0,
     Math.PI*2
@@ -1873,17 +1670,16 @@ function drawCar() {
 
 
   /*
-    Delivery sign.
+    Little delivery sign.
   */
 
-  ctx.fillStyle=
-    "#fffaf0";
+  ctx.fillStyle = "#fffaf0";
 
   ctx.beginPath();
 
   ctx.roundRect(
     -16,
-    -49,
+    -50,
     32,
     12,
     5
@@ -1898,40 +1694,34 @@ function drawCar() {
 }
 
 
-/* =====================================================
+/* =========================================================
    DIRECTION
-===================================================== */
+========================================================= */
 
 function updateDirection() {
 
-  if(!target)
+  if (!target)
     return;
 
 
-  const dx=
+  const dx =
     target.x-car.x;
 
-  const dy=
+  const dy =
     target.y-car.y;
 
-  const distance=
+  const distance =
     Math.hypot(dx,dy);
 
 
-  if(distance<75) {
+  if (distance < 75) {
 
-    document
-      .getElementById(
-        "direction"
-      )
-      .textContent=
+    document.getElementById("direction")
+      .textContent =
         "🏠 You're here!";
 
-    document
-      .getElementById(
-        "deliver"
-      )
-      .style.display=
+    document.getElementById("deliver")
+      .style.display =
         "block";
 
     return;
@@ -1939,74 +1729,67 @@ function updateDirection() {
   }
 
 
-  let angle=
+  let targetAngle =
     Math.atan2(
       dx,
       -dy
     );
 
 
-  let difference=
-    angle-car.angle;
+  let difference =
+    targetAngle-car.angle;
 
 
-  while(
-    difference>Math.PI
-  )
-    difference-=Math.PI*2;
+  while (difference > Math.PI)
+    difference -= Math.PI*2;
 
-  while(
-    difference<-Math.PI
-  )
-    difference+=Math.PI*2;
+  while (difference < -Math.PI)
+    difference += Math.PI*2;
 
 
-  let arrow="↑";
+  let arrow = "↑";
 
-  if(difference>.4)
-    arrow="↗";
+  if (difference > .4)
+    arrow = "↗";
 
-  if(difference>1.2)
-    arrow="→";
+  if (difference > 1.2)
+    arrow = "→";
 
-  if(difference<-.4)
-    arrow="↖";
+  if (difference < -.4)
+    arrow = "↖";
 
-  if(difference<-1.2)
-    arrow="←";
+  if (difference < -1.2)
+    arrow = "←";
 
 
-  document
-    .getElementById(
-      "direction"
-    )
-    .textContent=
-      arrow+
-      " "+
-      Math.round(distance)+
+  document.getElementById("direction")
+    .textContent =
+      arrow +
+      " " +
+      Math.round(distance) +
       "m";
 
 }
 
 
-/* =====================================================
+/* =========================================================
    DELIVERY
-===================================================== */
+========================================================= */
 
 function deliver() {
 
-  if(done)
+  if (deliveryDone)
     return;
 
 
-  const distance=
+  const distance =
     Math.hypot(
       target.x-car.x,
       target.y-car.y
     );
 
 
-  if(distance>75) {
+  if (distance > 75) {
 
     showMessage(
       "You're not at the house yet!"
@@ -2017,9 +1800,7 @@ function deliver() {
   }
 
 
-  if(
-    Math.abs(car.speed)>.7
-  ) {
+  if (Math.abs(car.speed) > .7) {
 
     showMessage(
       "Stop the car first! 🚗"
@@ -2030,37 +1811,32 @@ function deliver() {
   }
 
 
-  done=true;
+  deliveryDone = true;
 
   clearInterval(timer);
 
 
-  const tip=
+  const earned =
+    6 +
     Math.max(
       1,
       Math.floor(time/8)
     );
 
-  const earned=
-    6+tip;
 
-  money+=earned;
+  money += earned;
 
 
-  document
-    .getElementById("money")
-    .textContent=
-      money;
+  document.getElementById("money")
+    .textContent = money;
 
 
-  document
-    .getElementById("deliver")
-    .style.display=
-      "none";
+  document.getElementById("deliver")
+    .style.display = "none";
 
 
   showMessage(
-    "Delivery complete! ♡<br>+$"+
+    "Delivery complete! ♡<br>+$" +
     earned
   );
 
@@ -2073,54 +1849,45 @@ function deliver() {
 }
 
 
-/* =====================================================
+/* =========================================================
    CAR SHOP
-===================================================== */
+========================================================= */
 
 function openShop() {
 
-  document
-    .getElementById("shopScreen")
-    .style.display="flex";
+  document.getElementById("shopScreen")
+    .style.display = "flex";
 
-  document
-    .getElementById("shopMoney")
-    .textContent=
-      money;
+  document.getElementById("shopMoney")
+    .textContent = money;
 
 }
 
 
 function closeShop() {
 
-  document
-    .getElementById("shopScreen")
-    .style.display=
-      "none";
+  document.getElementById("shopScreen")
+    .style.display = "none";
 
 }
 
 
-function buyCar(color,price) {
+function buyCar(color, price) {
 
-  if(price===0) {
+  if (price === 0) {
 
-    car.color=color;
-
-    showMessage(
-      "You already have this car ♡"
-    );
+    car.color = color;
 
     return;
 
   }
 
 
-  if(money<price) {
+  if (money < price) {
 
     showMessage(
-      "You need $"+
-      (price-money)+
+      "You need $" +
+      (price-money) +
       " more! 💵"
     );
 
@@ -2129,20 +1896,16 @@ function buyCar(color,price) {
   }
 
 
-  money-=price;
+  money -= price;
 
-  car.color=color;
+  car.color = color;
 
 
-  document
-    .getElementById("money")
-    .textContent=
-      money;
+  document.getElementById("money")
+    .textContent = money;
 
-  document
-    .getElementById("shopMoney")
-    .textContent=
-      money;
+  document.getElementById("shopMoney")
+    .textContent = money;
 
 
   showMessage(
@@ -2152,40 +1915,37 @@ function buyCar(color,price) {
 }
 
 
-/* =====================================================
+/* =========================================================
    MESSAGE
-===================================================== */
+========================================================= */
 
 function showMessage(text) {
 
-  const box=
-    document.getElementById(
-      "message"
-    );
+  const box =
+    document.getElementById("message");
 
-  box.innerHTML=text;
+  box.innerHTML = text;
 
-  box.style.display="block";
+  box.style.display = "block";
 
-  clearTimeout(
-    box.hide
-  );
+  clearTimeout(box.hide);
 
-  box.hide=
+  box.hide =
     setTimeout(
-      () =>
-        box.style.display="none",
+      () => {
+        box.style.display = "none";
+      },
       1500
     );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    GAME LOOP
-===================================================== */
+========================================================= */
 
-function loop() {
+function gameLoop() {
 
   drive();
 
@@ -2195,12 +1955,11 @@ function loop() {
 
   drawWorld();
 
-  requestAnimationFrame(loop);
+  requestAnimationFrame(gameLoop);
 
 }
 
-loop();
-
+gameLoop();
 
 </script>
 
