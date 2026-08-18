@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-      maximum-scale=1.0,user-scalable=no">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 <title>Doodle Dash</title>
 
 <style>
@@ -19,362 +16,165 @@
 body {
   margin: 0;
   overflow: hidden;
-  background: #f9efe2;
-  color: #4e423b;
-  font-family: "Quicksand", sans-serif;
+  background: #dcebe4;
+  font-family: Quicksand, sans-serif;
+  color: #4d433d;
   touch-action: none;
 }
 
-#game {
-  position: relative;
+canvas {
+  display: block;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
 }
 
-/* --------------------------------------------------
-   SKY
--------------------------------------------------- */
-
-#sky {
-  position: absolute;
-  inset: 0 0 35% 0;
-  background: #cfe8e5;
-  overflow: hidden;
-}
-
-.sun {
-  position: absolute;
-  width: 75px;
-  height: 75px;
-  border-radius: 50%;
-  background: #f4d98a;
-  border: 4px solid #5c514a;
-  top: 10%;
-  right: 12%;
-}
-
-.cloud {
-  position: absolute;
-  width: 110px;
-  height: 35px;
-  border: 4px solid #5c514a;
-  border-radius: 30px;
-  background: #fffaf1;
-}
-
-.cloud:before,
-.cloud:after {
-  content: "";
-  position: absolute;
-  border: 4px solid #5c514a;
-  background: #fffaf1;
-  border-radius: 50%;
-}
-
-.cloud:before {
-  width: 40px;
-  height: 40px;
-  left: 15px;
-  top: -24px;
-}
-
-.cloud:after {
-  width: 48px;
-  height: 48px;
-  right: 15px;
-  top: -30px;
-}
-
-.cloud1 {
-  left: 12%;
-  top: 17%;
-}
-
-.cloud2 {
-  left: 48%;
-  top: 10%;
-  transform: scale(.7);
-}
-
-/* --------------------------------------------------
-   DISTANT BUILDINGS
--------------------------------------------------- */
-
-#city {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 28%;
-  height: 27%;
-}
-
-.building {
-  position: absolute;
-  bottom: 0;
-  width: 110px;
-  border: 4px solid #574b44;
-  background: #f1c7bc;
-}
-
-.building:nth-child(1) {
-  height: 150px;
-  left: 5%;
-}
-
-.building:nth-child(2) {
-  height: 100px;
-  left: 18%;
-  background: #e8d4a8;
-}
-
-.building:nth-child(3) {
-  height: 175px;
-  left: 31%;
-  background: #c8dcbf;
-}
-
-.building:nth-child(4) {
-  height: 120px;
-  right: 24%;
-  background: #e9c5d0;
-}
-
-.building:nth-child(5) {
-  height: 155px;
-  right: 8%;
-  background: #dfc9aa;
-}
-
-.window {
-  position: absolute;
-  width: 20px;
-  height: 28px;
-  border: 3px solid #574b44;
-  background: #f9e8ad;
-}
-
-.w1 { left: 20px; top: 25px; }
-.w2 { right: 20px; top: 25px; }
-.w3 { left: 20px; top: 70px; }
-.w4 { right: 20px; top: 70px; }
-
-/* --------------------------------------------------
-   ROAD
--------------------------------------------------- */
-
-#road {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 42%;
-  background: #9e9a96;
-  border-top: 5px solid #514943;
-  clip-path: polygon(
-    38% 0,
-    62% 0,
-    100% 100%,
-    0 100%
-  );
-}
-
-.roadLine {
-  position: absolute;
-  width: 12px;
-  height: 65px;
-  background: #fff4d6;
-  left: calc(50% - 6px);
-  transform-origin: center;
-}
-
-.line1 {
-  top: 5%;
-}
-
-.line2 {
-  top: 38%;
-  transform: scale(1.3);
-}
-
-.line3 {
-  top: 72%;
-  transform: scale(1.8);
-}
-
-/* --------------------------------------------------
-   FIRST PERSON DASHBOARD
--------------------------------------------------- */
-
-#dashboard {
-  position: absolute;
-  bottom: -5%;
-  left: 0;
-  width: 100%;
-  height: 28%;
-  background: #d8bda9;
-  border-top: 5px solid #514943;
-  border-radius: 50% 50% 0 0;
-  z-index: 20;
-}
-
-#wheel {
-  position: absolute;
-  left: 50%;
-  top: 8%;
-  transform: translateX(-50%);
-  width: 145px;
-  height: 145px;
-  border: 13px solid #514943;
-  border-radius: 50%;
-}
-
-#wheel:before {
-  content: "";
-  position: absolute;
-  width: 15px;
-  height: 90px;
-  background: #514943;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%,-5%);
-}
-
-#wheel:after {
-  content: "";
-  position: absolute;
-  width: 90px;
-  height: 15px;
-  background: #514943;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%,-50%);
-}
-
-/* --------------------------------------------------
-   HUD
--------------------------------------------------- */
+/* HUD */
 
 #hud {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  right: 14px;
   display: flex;
   justify-content: space-between;
-  z-index: 30;
+  gap: 10px;
+  z-index: 10;
+  pointer-events: none;
 }
 
 .card {
   background: #fffaf1;
   border: 3px solid #514943;
-  border-radius: 15px;
-  padding: 8px 13px;
-  box-shadow: 3px 3px 0 #d1bca9;
+  border-radius: 16px;
+  padding: 9px 14px;
+  box-shadow: 3px 3px 0 #cdbbaa;
 }
 
-#order {
-  max-width: 260px;
+#orderCard {
+  max-width: 300px;
+}
+
+#customer {
+  font-family: "Patrick Hand", cursive;
+  font-size: 23px;
+}
+
+#address {
+  font-size: 13px;
 }
 
 #money {
-  font-weight: 700;
+  font-weight: bold;
 }
 
-#timer {
-  font-weight: 700;
-}
+/* direction */
 
 #direction {
-  position: absolute;
-  top: 105px;
+  position: fixed;
+  top: 115px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 30;
+  z-index: 10;
+
   background: #fffaf1;
   border: 3px solid #514943;
-  border-radius: 50px;
+  border-radius: 30px;
+
   padding: 8px 18px;
+
   font-family: "Patrick Hand", cursive;
   font-size: 22px;
+
+  pointer-events: none;
 }
 
-/* --------------------------------------------------
-   TOUCH CONTROLS
--------------------------------------------------- */
+/* delivery */
+
+#deliver {
+  position: fixed;
+  left: 50%;
+  bottom: 135px;
+  transform: translateX(-50%);
+
+  display: none;
+
+  background: #9dbba2;
+  color: white;
+
+  border: 3px solid #514943;
+  border-radius: 18px;
+
+  padding: 12px 28px;
+
+  font-family: "Patrick Hand", cursive;
+  font-size: 26px;
+
+  box-shadow: 3px 3px 0 #514943;
+  z-index: 20;
+}
+
+/* message */
+
+#message {
+  position: fixed;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%,-50%);
+
+  background: #fffaf1;
+  border: 3px solid #514943;
+  border-radius: 18px;
+
+  padding: 15px 25px;
+
+  font-family: "Patrick Hand", cursive;
+  font-size: 28px;
+  text-align: center;
+
+  display: none;
+  z-index: 30;
+}
+
+/* controls */
 
 #controls {
-  position: absolute;
-  bottom: 25px;
-  left: 20px;
-  right: 20px;
-  z-index: 50;
-  display: none;
+  position: fixed;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+
+  display: flex;
   justify-content: space-between;
+
+  z-index: 20;
   pointer-events: none;
 }
 
 .controlGroup {
   display: flex;
-  gap: 10px;
-  pointer-events: auto;
+  gap: 9px;
 }
 
 .control {
-  width: 70px;
-  height: 60px;
+  width: 65px;
+  height: 58px;
+
   border: 3px solid #514943;
-  border-radius: 18px;
+  border-radius: 17px;
+
   background: #fffaf1;
+
   font-family: "Patrick Hand", cursive;
-  font-size: 24px;
-  box-shadow: 3px 3px 0 #cbb5a4;
+  font-size: 25px;
+
+  box-shadow: 3px 3px 0 #cdbbaa;
+
+  pointer-events: auto;
 }
 
 .control:active {
   transform: translateY(2px);
 }
-
-/* --------------------------------------------------
-   DELIVERY
--------------------------------------------------- */
-
-#deliveryButton {
-  position: absolute;
-  z-index: 60;
-  bottom: 30%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: none;
-  border: 3px solid #514943;
-  border-radius: 17px;
-  background: #9dbca1;
-  color: white;
-  padding: 12px 25px;
-  font-family: "Patrick Hand", cursive;
-  font-size: 25px;
-  box-shadow: 3px 3px 0 #514943;
-}
-
-#message {
-  position: absolute;
-  z-index: 70;
-  left: 50%;
-  top: 48%;
-  transform: translate(-50%,-50%);
-  background: #fffaf1;
-  border: 3px solid #514943;
-  border-radius: 18px;
-  padding: 15px 25px;
-  font-family: "Patrick Hand", cursive;
-  font-size: 26px;
-  text-align: center;
-  display: none;
-}
-
-/* --------------------------------------------------
-   MOBILE
--------------------------------------------------- */
 
 @media (pointer: coarse) {
   #controls {
@@ -382,163 +182,73 @@ body {
   }
 }
 
-@media (max-width: 600px) {
+@media (pointer: fine) {
+  #controls {
+    display: none;
+  }
+}
+
+@media(max-width:600px) {
+
+  #orderCard {
+    max-width: 210px;
+  }
 
   .card {
+    padding: 7px 10px;
     font-size: 12px;
-    padding: 7px 9px;
   }
 
-  #order {
-    max-width: 190px;
+  #customer {
+    font-size: 20px;
   }
 
-  #wheel {
-    width: 115px;
-    height: 115px;
+  #direction {
+    top: 100px;
+    font-size: 19px;
   }
-
-  #dashboard {
-    height: 25%;
-  }
-
 }
 </style>
 </head>
 
 <body>
 
-<div id="game">
+<canvas id="game"></canvas>
 
-  <div id="sky">
+<div id="hud">
 
-    <div class="sun"></div>
-
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
-
+  <div class="card" id="orderCard">
+    <div id="customer">Loading...</div>
+    <div id="address">Finding customer...</div>
   </div>
 
-
-  <div id="city">
-
-    <div class="building">
-      <div class="window w1"></div>
-      <div class="window w2"></div>
-      <div class="window w3"></div>
-      <div class="window w4"></div>
-    </div>
-
-    <div class="building">
-      <div class="window w1"></div>
-      <div class="window w2"></div>
-    </div>
-
-    <div class="building">
-      <div class="window w1"></div>
-      <div class="window w2"></div>
-      <div class="window w3"></div>
-    </div>
-
-    <div class="building">
-      <div class="window w1"></div>
-      <div class="window w2"></div>
-    </div>
-
-    <div class="building">
-      <div class="window w1"></div>
-      <div class="window w2"></div>
-      <div class="window w3"></div>
-    </div>
-
+  <div class="card">
+    💵 $<span id="money">0</span><br>
+    ⏱️ <span id="timer">60</span>s
   </div>
 
+</div>
 
-  <div id="road">
+<div id="direction">
+  Find your customer ↑
+</div>
 
-    <div class="roadLine line1"></div>
-    <div class="roadLine line2"></div>
-    <div class="roadLine line3"></div>
+<button id="deliver" onclick="deliverFood()">
+  Deliver ♡
+</button>
 
+<div id="message"></div>
+
+<div id="controls">
+
+  <div class="controlGroup">
+    <button class="control" id="left">←</button>
+    <button class="control" id="right">→</button>
   </div>
 
-
-  <!-- HUD -->
-
-  <div id="hud">
-
-    <div class="card" id="order">
-      📦 Delivery: <strong id="customer">Loading...</strong><br>
-      <span id="address">Finding address...</span>
-    </div>
-
-    <div class="card">
-      💵 $<span id="money">0</span><br>
-      ⏱️ <span id="timer">60</span>s
-    </div>
-
-  </div>
-
-
-  <div id="direction">
-    ↑ Find the customer
-  </div>
-
-
-  <!-- DELIVERY -->
-
-  <button id="deliveryButton"
-          onclick="deliver()">
-    Deliver ♡
-  </button>
-
-
-  <!-- MESSAGE -->
-
-  <div id="message"></div>
-
-
-  <!-- DASHBOARD -->
-
-  <div id="dashboard">
-
-    <div id="wheel"></div>
-
-  </div>
-
-
-  <!-- MOBILE CONTROLS -->
-
-  <div id="controls">
-
-    <div class="controlGroup">
-
-      <button class="control"
-              id="left">
-        ←
-      </button>
-
-      <button class="control"
-              id="right">
-        →
-      </button>
-
-    </div>
-
-    <div class="controlGroup">
-
-      <button class="control"
-              id="brake">
-        ◼
-      </button>
-
-      <button class="control"
-              id="gas">
-        ↑
-      </button>
-
-    </div>
-
+  <div class="controlGroup">
+    <button class="control" id="brake">↓</button>
+    <button class="control" id="gas">↑</button>
   </div>
 
 </div>
@@ -546,109 +256,263 @@ body {
 
 <script>
 
-/* ==================================================
+/* =====================================================
    DOODLE DASH
-   ================================================== */
+   ===================================================== */
+
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+let W, H;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+window.addEventListener("resize", resize);
+resize();
 
 
-/* -----------------------------
-   GAME STATE
------------------------------ */
+/* =====================================================
+   PLAYER
+   ===================================================== */
+
+const player = {
+  x: 0,
+  y: 0,
+
+  angle: 0,
+
+  speed: 0,
+
+  width: 32,
+  height: 52
+};
+
+
+/* =====================================================
+   WORLD
+   ===================================================== */
+
+/*
+  Streets form a big grid.
+
+  This makes the world feel like a collection
+  of neighborhoods rather than one long road.
+*/
+
+const roadWidth = 120;
+
+const streetsX = [
+  -900,
+  -600,
+  -300,
+  0,
+  300,
+  600,
+  900
+];
+
+const streetsY = [
+  -900,
+  -600,
+  -300,
+  0,
+  300,
+  600,
+  900
+];
+
+const worldSize = 1200;
+
+
+/* =====================================================
+   HOUSES
+   ===================================================== */
+
+let houses = [];
+
+const houseColors = [
+  "#f0c5bd",
+  "#e8d6a8",
+  "#c9ddc2",
+  "#d7c4e5",
+  "#efcfae",
+  "#c7dce3"
+];
+
+function makeHouses() {
+
+  houses = [];
+
+  /*
+    Put houses in the spaces between streets.
+  */
+
+  for (let x = -1050; x <= 1050; x += 150) {
+
+    for (let y = -1050; y <= 1050; y += 150) {
+
+      /*
+        Don't put houses directly on roads.
+      */
+
+      const nearRoadX =
+        streetsX.some(s => Math.abs(x - s) < 75);
+
+      const nearRoadY =
+        streetsY.some(s => Math.abs(y - s) < 75);
+
+      if (nearRoadX || nearRoadY)
+        continue;
+
+      houses.push({
+        x,
+        y,
+
+        width: 75,
+        height: 65,
+
+        color:
+          houseColors[
+            Math.floor(
+              Math.random() * houseColors.length
+            )
+          ],
+
+        roof:
+          Math.random() > .5 ? "#c98278" : "#817d91"
+      });
+
+    }
+  }
+}
+
+makeHouses();
+
+
+/* =====================================================
+   TREES
+   ===================================================== */
+
+let trees = [];
+
+function makeTrees() {
+
+  trees = [];
+
+  for (let i = 0; i < 130; i++) {
+
+    trees.push({
+
+      x:
+        Math.random() *
+        2100 - 1050,
+
+      y:
+        Math.random() *
+        2100 - 1050,
+
+      size:
+        18 + Math.random() * 12
+
+    });
+
+  }
+
+}
+
+makeTrees();
+
+
+/* =====================================================
+   CUSTOMER
+   ===================================================== */
+
+const customers = [
+  ["Mia", "Maple Street"],
+  ["Lily", "Rose Avenue"],
+  ["Emma", "Sunny Lane"],
+  ["Noah", "Pine Road"],
+  ["Ava", "Cloud Street"],
+  ["Sophie", "Willow Way"],
+  ["Ella", "Garden Drive"],
+  ["Ruby", "Meadow Street"]
+];
+
+let currentCustomer;
+
+let targetHouse;
 
 let money = 0;
-let speed = 0;
-
-let x = 0;
-let distance = 0;
-
-let targetDistance = 900;
 
 let timeLeft = 60;
-
-let leftPressed = false;
-let rightPressed = false;
-let gasPressed = false;
-let brakePressed = false;
 
 let delivered = false;
 
 
-/* -----------------------------
-   CUSTOMERS
------------------------------ */
-
-const customers = [
-  {
-    name: "Mia",
-    address: "Maple Street • House 12"
-  },
-  {
-    name: "Lily",
-    address: "Rose Avenue • House 7"
-  },
-  {
-    name: "Noah",
-    address: "Sunny Lane • House 19"
-  },
-  {
-    name: "Emma",
-    address: "Pine Road • House 4"
-  },
-  {
-    name: "Ava",
-    address: "Cloud Street • House 16"
-  }
-];
-
-
-let currentCustomer;
-
-
-/* -----------------------------
-   START DELIVERY
------------------------------ */
+/* =====================================================
+   NEW DELIVERY
+   ===================================================== */
 
 function newDelivery() {
 
   delivered = false;
 
+  document.getElementById("deliver")
+    .style.display = "none";
+
   currentCustomer =
     customers[
       Math.floor(
-        Math.random() * customers.length
+        Math.random() *
+        customers.length
       )
     ];
 
+
+  /*
+    Pick a random house.
+  */
+
+  targetHouse =
+    houses[
+      Math.floor(
+        Math.random() *
+        houses.length
+      )
+    ];
+
+
   document.getElementById("customer")
     .textContent =
-      currentCustomer.name;
+      "📦 Delivery for " +
+      currentCustomer[0];
 
   document.getElementById("address")
     .textContent =
-      currentCustomer.address;
+      currentCustomer[1] +
+      " • House " +
+      Math.floor(
+        Math.random() * 20 + 1
+      );
 
-  targetDistance =
-    700 + Math.random() * 700;
-
-  distance = 0;
 
   timeLeft = 60;
 
   document.getElementById("timer")
     .textContent =
-      Math.ceil(timeLeft);
-
-  document.getElementById("direction")
-    .textContent =
-      "↑ Find " + currentCustomer.name;
+      timeLeft;
 
   startTimer();
+
 }
 
 
-/* -----------------------------
+/* =====================================================
    TIMER
------------------------------ */
+   ===================================================== */
 
 let timerInterval;
 
@@ -662,117 +526,76 @@ function startTimer() {
       if (delivered)
         return;
 
-      timeLeft -= 1;
+      timeLeft--;
 
       document.getElementById("timer")
         .textContent =
-          Math.max(0, Math.ceil(timeLeft));
+          Math.max(0, timeLeft);
 
       if (timeLeft <= 0) {
 
         clearInterval(timerInterval);
 
         showMessage(
-          "You missed the delivery! 😭"
+          "Too slow! They went inside 😭"
         );
 
-        setTimeout(newDelivery, 1500);
+        setTimeout(
+          newDelivery,
+          1500
+        );
 
       }
 
     }, 1000);
+
 }
 
 
-/* -----------------------------
+/* =====================================================
    KEYBOARD
------------------------------ */
+   ===================================================== */
+
+const keys = {};
 
 document.addEventListener(
   "keydown",
   e => {
 
-    if (
-      e.key === "ArrowLeft" ||
-      e.key.toLowerCase() === "a"
-    ) {
-      leftPressed = true;
-    }
+    keys[e.key.toLowerCase()] = true;
 
     if (
-      e.key === "ArrowRight" ||
-      e.key.toLowerCase() === "d"
-    ) {
-      rightPressed = true;
-    }
-
-    if (
+      e.key === " " ||
       e.key === "ArrowUp" ||
-      e.key.toLowerCase() === "w"
-    ) {
-      gasPressed = true;
-    }
-
-    if (
       e.key === "ArrowDown" ||
-      e.key.toLowerCase() === "s" ||
-      e.code === "Space"
+      e.key === "ArrowLeft" ||
+      e.key === "ArrowRight"
     ) {
-      brakePressed = true;
+      e.preventDefault();
     }
 
     if (e.key.toLowerCase() === "e") {
-
-      deliver();
-
+      deliverFood();
     }
 
   }
 );
-
 
 document.addEventListener(
   "keyup",
   e => {
 
-    if (
-      e.key === "ArrowLeft" ||
-      e.key.toLowerCase() === "a"
-    ) {
-      leftPressed = false;
-    }
-
-    if (
-      e.key === "ArrowRight" ||
-      e.key.toLowerCase() === "d"
-    ) {
-      rightPressed = false;
-    }
-
-    if (
-      e.key === "ArrowUp" ||
-      e.key.toLowerCase() === "w"
-    ) {
-      gasPressed = false;
-    }
-
-    if (
-      e.key === "ArrowDown" ||
-      e.key.toLowerCase() === "s" ||
-      e.code === "Space"
-    ) {
-      brakePressed = false;
-    }
+    keys[e.key.toLowerCase()] = false;
 
   }
 );
 
 
-/* -----------------------------
-   TOUCH CONTROLS
------------------------------ */
+/* =====================================================
+   TOUCH
+   ===================================================== */
 
-function holdButton(id, variable) {
+function hold(id, name) {
 
   const button =
     document.getElementById(id);
@@ -783,17 +606,7 @@ function holdButton(id, variable) {
 
       e.preventDefault();
 
-      if (variable === "left")
-        leftPressed = true;
-
-      if (variable === "right")
-        rightPressed = true;
-
-      if (variable === "gas")
-        gasPressed = true;
-
-      if (variable === "brake")
-        brakePressed = true;
+      keys[name] = true;
 
     }
   );
@@ -802,17 +615,7 @@ function holdButton(id, variable) {
     "pointerup",
     () => {
 
-      if (variable === "left")
-        leftPressed = false;
-
-      if (variable === "right")
-        rightPressed = false;
-
-      if (variable === "gas")
-        gasPressed = false;
-
-      if (variable === "brake")
-        brakePressed = false;
+      keys[name] = false;
 
     }
   );
@@ -821,139 +624,782 @@ function holdButton(id, variable) {
     "pointercancel",
     () => {
 
-      if (variable === "left")
-        leftPressed = false;
-
-      if (variable === "right")
-        rightPressed = false;
-
-      if (variable === "gas")
-        gasPressed = false;
-
-      if (variable === "brake")
-        brakePressed = false;
+      keys[name] = false;
 
     }
   );
+
 }
 
+hold("left", "arrowleft");
+hold("right", "arrowright");
+hold("gas", "arrowup");
+hold("brake", "arrowdown");
 
-holdButton("left","left");
-holdButton("right","right");
-holdButton("gas","gas");
-holdButton("brake","brake");
+
+/* =====================================================
+   CAR PHYSICS
+   ===================================================== */
+
+function updatePlayer() {
+
+  const forward =
+    keys["arrowup"] ||
+    keys["w"];
+
+  const brake =
+    keys["arrowdown"] ||
+    keys["s"];
+
+  const left =
+    keys["arrowleft"] ||
+    keys["a"];
+
+  const right =
+    keys["arrowright"] ||
+    keys["d"];
 
 
-/* -----------------------------
-   DRIVING
------------------------------ */
+  /* acceleration */
 
-function update() {
+  if (forward) {
 
-  /*
-   * Accelerate
-   */
-
-  if (gasPressed) {
-
-    speed += .16;
+    player.speed += .18;
 
   } else {
 
-    speed -= .04;
+    player.speed *= .96;
 
   }
 
 
-  /*
-   * Brake
-   */
+  /* braking */
 
-  if (brakePressed) {
+  if (brake) {
 
-    speed -= .25;
+    player.speed *= .88;
 
   }
 
 
-  speed =
+  player.speed =
     Math.max(
-      0,
-      Math.min(speed, 7)
+      -1.5,
+      Math.min(
+        player.speed,
+        5.5
+      )
     );
 
 
   /*
-   * Steering
-   */
+    Steering becomes stronger
+    when the car is moving.
+  */
 
-  if (leftPressed) {
+  if (Math.abs(player.speed) > .1) {
 
-    x -= speed * .9;
+    if (left)
+      player.angle -=
+        .035 *
+        Math.abs(player.speed);
 
-  }
-
-  if (rightPressed) {
-
-    x += speed * .9;
+    if (right)
+      player.angle +=
+        .035 *
+        Math.abs(player.speed);
 
   }
 
 
   /*
-   * Keep car on road
-   */
+    Move car.
+  */
 
-  x =
+  player.x +=
+    Math.sin(player.angle) *
+    player.speed;
+
+  player.y +=
+    -Math.cos(player.angle) *
+    player.speed;
+
+
+  /*
+    World boundaries.
+  */
+
+  player.x =
     Math.max(
-      -140,
-      Math.min(140, x)
+      -1100,
+      Math.min(
+        1100,
+        player.x
+      )
     );
 
+  player.y =
+    Math.max(
+      -1100,
+      Math.min(
+        1100,
+        player.y
+      )
+    );
+
+}
+
+
+/* =====================================================
+   ROAD CHECK
+   ===================================================== */
+
+function isOnRoad(x, y) {
+
+  const onX =
+    streetsX.some(
+      s => Math.abs(x - s) < roadWidth / 2
+    );
+
+  const onY =
+    streetsY.some(
+      s => Math.abs(y - s) < roadWidth / 2
+    );
+
+  return onX || onY;
+}
+
+
+/* =====================================================
+   DRAW WORLD
+   ===================================================== */
+
+function drawWorld() {
+
+  ctx.clearRect(
+    0,
+    0,
+    W,
+    H
+  );
+
 
   /*
-   * Distance
-   */
+    Sky / ground
+  */
 
-  distance += speed;
+  ctx.fillStyle = "#cfe7e3";
+  ctx.fillRect(
+    0,
+    0,
+    W,
+    H
+  );
 
 
   /*
-   * Road animation
-   */
+    Camera follows player.
+  */
 
-  const lines =
-    document.querySelectorAll(".roadLine");
+  const cameraX =
+    player.x;
 
-  lines.forEach((line,index) => {
+  const cameraY =
+    player.y;
 
-    let offset =
-      (distance * (index + 1) * .8)
-      % 100;
 
-    line.style.top =
-      (offset + index * 30) + "%";
+  /*
+    Ground
+  */
+
+  ctx.save();
+
+  ctx.translate(
+    W / 2 - cameraX,
+    H / 2 - cameraY
+  );
+
+
+  ctx.fillStyle = "#b9d0ad";
+
+  ctx.fillRect(
+    -1300,
+    -1300,
+    2600,
+    2600
+  );
+
+
+  /*
+    Sidewalks / roads
+  */
+
+  streetsX.forEach(x => {
+
+    ctx.fillStyle = "#d9d1c7";
+
+    ctx.fillRect(
+      x - 70,
+      -1200,
+      140,
+      2400
+    );
+
+    ctx.fillStyle = "#9d9b98";
+
+    ctx.fillRect(
+      x - 55,
+      -1200,
+      110,
+      2400
+    );
+
+  });
+
+
+  streetsY.forEach(y => {
+
+    ctx.fillStyle = "#d9d1c7";
+
+    ctx.fillRect(
+      -1200,
+      y - 70,
+      2400,
+      140
+    );
+
+    ctx.fillStyle = "#9d9b98";
+
+    ctx.fillRect(
+      -1200,
+      y - 55,
+      2400,
+      110
+    );
 
   });
 
 
   /*
-   * Slight camera movement
-   */
+    Road markings
+  */
 
-  document.getElementById("game")
-    .style.transform =
-      `translateX(${x * .12}px)`;
+  ctx.strokeStyle = "#eee3c8";
+  ctx.lineWidth = 5;
+  ctx.setLineDash([28,28]);
+
+  streetsX.forEach(x => {
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      x,
+      -1200
+    );
+
+    ctx.lineTo(
+      x,
+      1200
+    );
+
+    ctx.stroke();
+
+  });
+
+
+  streetsY.forEach(y => {
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      -1200,
+      y
+    );
+
+    ctx.lineTo(
+      1200,
+      y
+    );
+
+    ctx.stroke();
+
+  });
+
+  ctx.setLineDash([]);
 
 
   /*
-   * Check destination
-   */
+    Trees
+  */
 
-  if (
-    distance >= targetDistance &&
-    !delivered
-  ) {
+  trees.forEach(tree => {
+
+    /*
+      Only draw nearby trees.
+    */
+
+    if (
+      Math.abs(tree.x - cameraX) > 700 ||
+      Math.abs(tree.y - cameraY) > 500
+    )
+      return;
+
+
+    ctx.fillStyle = "#765f4e";
+
+    ctx.fillRect(
+      tree.x - 4,
+      tree.y,
+      8,
+      25
+    );
+
+    ctx.fillStyle = "#789d71";
+
+    ctx.beginPath();
+
+    ctx.arc(
+      tree.x,
+      tree.y,
+      tree.size,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fill();
+
+    ctx.strokeStyle = "#514943";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+  });
+
+
+  /*
+    Houses
+  */
+
+  houses.forEach(house => {
+
+    if (
+      Math.abs(house.x - cameraX) > 800 ||
+      Math.abs(house.y - cameraY) > 600
+    )
+      return;
+
+
+    /* house */
+
+    ctx.fillStyle =
+      house.color;
+
+    ctx.strokeStyle =
+      "#514943";
+
+    ctx.lineWidth = 4;
+
+    ctx.fillRect(
+      house.x - house.width / 2,
+      house.y - house.height / 2,
+      house.width,
+      house.height
+    );
+
+    ctx.strokeRect(
+      house.x - house.width / 2,
+      house.y - house.height / 2,
+      house.width,
+      house.height
+    );
+
+
+    /*
+      roof
+    */
+
+    ctx.fillStyle =
+      house.roof;
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      house.x - 48,
+      house.y - 32
+    );
+
+    ctx.lineTo(
+      house.x,
+      house.y - 72
+    );
+
+    ctx.lineTo(
+      house.x + 48,
+      house.y - 32
+    );
+
+    ctx.closePath();
+
+    ctx.fill();
+    ctx.stroke();
+
+
+    /*
+      door
+    */
+
+    ctx.fillStyle =
+      "#a87562";
+
+    ctx.fillRect(
+      house.x - 9,
+      house.y + 4,
+      18,
+      30
+    );
+
+    ctx.strokeRect(
+      house.x - 9,
+      house.y + 4,
+      18,
+      30
+    );
+
+
+    /*
+      windows
+    */
+
+    ctx.fillStyle =
+      "#f8e7aa";
+
+    ctx.fillRect(
+      house.x - 30,
+      house.y - 20,
+      18,
+      18
+    );
+
+    ctx.fillRect(
+      house.x + 12,
+      house.y - 20,
+      18,
+      18
+    );
+
+  });
+
+
+  /*
+    Target house marker
+  */
+
+  if (targetHouse && !delivered) {
+
+    const d =
+      Math.hypot(
+        targetHouse.x - player.x,
+        targetHouse.y - player.y
+      );
+
+
+    if (d < 650) {
+
+      ctx.strokeStyle =
+        "#e38c82";
+
+      ctx.lineWidth = 5;
+
+      ctx.beginPath();
+
+      ctx.arc(
+        targetHouse.x,
+        targetHouse.y - 85,
+        18,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.stroke();
+
+
+      ctx.fillStyle =
+        "#e38c82";
+
+      ctx.font =
+        "bold 24px Patrick Hand";
+
+      ctx.textAlign =
+        "center";
+
+      ctx.fillText(
+        "DROP OFF",
+        targetHouse.x,
+        targetHouse.y - 110
+      );
+
+    }
+
+  }
+
+
+  /*
+    Car
+  */
+
+  drawCar(
+    player.x,
+    player.y,
+    player.angle
+  );
+
+
+  ctx.restore();
+
+}
+
+
+/* =====================================================
+   DRAW CAR
+   ===================================================== */
+
+function drawCar(x, y, angle) {
+
+  ctx.save();
+
+  ctx.translate(
+    x,
+    y
+  );
+
+  ctx.rotate(angle);
+
+
+  /*
+    shadow
+  */
+
+  ctx.fillStyle =
+    "rgba(70,60,50,.2)";
+
+  ctx.beginPath();
+
+  ctx.ellipse(
+    0,
+    5,
+    24,
+    38,
+    0,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+
+
+  /*
+    body
+  */
+
+  ctx.fillStyle =
+    "#e89c91";
+
+  ctx.strokeStyle =
+    "#514943";
+
+  ctx.lineWidth = 4;
+
+  ctx.beginPath();
+
+  ctx.roundRect(
+    -22,
+    -30,
+    44,
+    60,
+    11
+  );
+
+  ctx.fill();
+  ctx.stroke();
+
+
+  /*
+    windshield
+  */
+
+  ctx.fillStyle =
+    "#b9d9d8";
+
+  ctx.beginPath();
+
+  ctx.roundRect(
+    -16,
+    -18,
+    32,
+    20,
+    5
+  );
+
+  ctx.fill();
+  ctx.stroke();
+
+
+  /*
+    back window
+  */
+
+  ctx.beginPath();
+
+  ctx.roundRect(
+    -15,
+    6,
+    30,
+    13,
+    4
+  );
+
+  ctx.fill();
+  ctx.stroke();
+
+
+  /*
+    headlights
+  */
+
+  ctx.fillStyle =
+    "#f5dc8a";
+
+  ctx.beginPath();
+
+  ctx.arc(
+    -13,
+    -27,
+    5,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.arc(
+    13,
+    -27,
+    5,
+    0,
+    Math.PI * 2
+  );
+
+  ctx.fill();
+  ctx.stroke();
+
+
+  /*
+    wheels
+  */
+
+  ctx.fillStyle =
+    "#514943";
+
+  ctx.fillRect(
+    -27,
+    -18,
+    8,
+    18
+  );
+
+  ctx.fillRect(
+    19,
+    -18,
+    8,
+    18
+  );
+
+  ctx.fillRect(
+    -27,
+    5,
+    8,
+    18
+  );
+
+  ctx.fillRect(
+    19,
+    5,
+    8,
+    18
+  );
+
+
+  /*
+    delivery sign
+  */
+
+  ctx.fillStyle =
+    "#fffaf1";
+
+  ctx.beginPath();
+
+  ctx.roundRect(
+    -15,
+    -42,
+    30,
+    12,
+    5
+  );
+
+  ctx.fill();
+  ctx.stroke();
+
+
+  ctx.restore();
+
+}
+
+
+/* =====================================================
+   DISTANCE TO HOUSE
+   ===================================================== */
+
+function distanceToTarget() {
+
+  if (!targetHouse)
+    return 9999;
+
+  return Math.hypot(
+    targetHouse.x - player.x,
+    targetHouse.y - player.y
+  );
+
+}
+
+
+/* =====================================================
+   DIRECTION
+   ===================================================== */
+
+function updateDirection() {
+
+  if (!targetHouse)
+    return;
+
+
+  const dx =
+    targetHouse.x -
+    player.x;
+
+  const dy =
+    targetHouse.y -
+    player.y;
+
+
+  const distance =
+    Math.hypot(
+      dx,
+      dy
+    );
+
+
+  /*
+    If close enough:
+  */
+
+  if (distance < 75) {
 
     document.getElementById(
       "direction"
@@ -961,44 +1407,99 @@ function update() {
       "🏠 You're here!";
 
     document.getElementById(
-      "deliveryButton"
+      "deliver"
     ).style.display =
       "block";
+
+    return;
 
   }
 
 
-  requestAnimationFrame(update);
+  /*
+    Work out whether target
+    is left/right/forward/back.
+  */
+
+  let targetAngle =
+    Math.atan2(
+      dx,
+      -dy
+    );
+
+
+  let difference =
+    targetAngle -
+    player.angle;
+
+
+  while (difference > Math.PI)
+    difference -= Math.PI * 2;
+
+  while (difference < -Math.PI)
+    difference += Math.PI * 2;
+
+
+  let arrow = "↑";
+
+
+  if (difference > .4)
+    arrow = "↗";
+
+  if (difference > 1.2)
+    arrow = "→";
+
+  if (difference < -.4)
+    arrow = "↖";
+
+  if (difference < -1.2)
+    arrow = "←";
+
+
+  document.getElementById(
+    "direction"
+  ).textContent =
+    arrow +
+    " " +
+    Math.round(distance) +
+    "m";
 
 }
 
 
-/* -----------------------------
+/* =====================================================
    DELIVERY
------------------------------ */
+   ===================================================== */
 
-function deliver() {
+function deliverFood() {
 
   if (delivered)
     return;
 
-  if (distance < targetDistance) {
+
+  const distance =
+    distanceToTarget();
+
+
+  if (distance > 75) {
 
     showMessage(
       "You're not at the house yet!"
     );
 
     return;
+
   }
 
 
-  if (speed > 1.5) {
+  if (Math.abs(player.speed) > 1) {
 
     showMessage(
-      "Slow down before delivering!"
+      "Stop the car first! 🚗"
     );
 
     return;
+
   }
 
 
@@ -1007,90 +1508,108 @@ function deliver() {
   clearInterval(timerInterval);
 
 
-  /*
-   * Tip calculation
-   */
-
-  let base = 6;
-
   let tip =
     Math.max(
       1,
-      Math.round(timeLeft / 8)
+      Math.floor(
+        timeLeft / 7
+      )
     );
 
+
   let earned =
-    base + tip;
+    6 + tip;
 
   money += earned;
 
 
-  document.getElementById("money")
-    .textContent =
-      money;
+  document.getElementById(
+    "money"
+  ).textContent =
+    money;
 
 
   document.getElementById(
-    "deliveryButton"
+    "deliver"
   ).style.display =
     "none";
 
 
   showMessage(
-    "Delivery complete! ♡\n+$" +
-    earned
+    "Delivered! ♡<br>+$" +
+    earned +
+    " tip"
   );
 
 
-  setTimeout(() => {
-
-    document.getElementById(
-      "message"
-    ).style.display =
-      "none";
-
-    newDelivery();
-
-  }, 1800);
+  setTimeout(
+    newDelivery,
+    1800
+  );
 
 }
 
 
-/* -----------------------------
+/* =====================================================
    MESSAGE
------------------------------ */
+   ===================================================== */
 
 function showMessage(text) {
 
   const message =
-    document.getElementById("message");
+    document.getElementById(
+      "message"
+    );
 
   message.innerHTML =
-    text.replace("\n","<br>");
+    text;
 
   message.style.display =
     "block";
 
-  clearTimeout(message.hideTimer);
 
-  message.hideTimer =
+  clearTimeout(
+    message.hide
+  );
+
+
+  message.hide =
     setTimeout(() => {
 
       message.style.display =
         "none";
 
-    }, 1300);
+    }, 1400);
 
 }
 
 
-/* -----------------------------
+/* =====================================================
+   GAME LOOP
+   ===================================================== */
+
+function loop() {
+
+  updatePlayer();
+
+  updateDirection();
+
+  drawWorld();
+
+  requestAnimationFrame(
+    loop
+  );
+
+}
+
+
+/* =====================================================
    START
------------------------------ */
+   ===================================================== */
 
 newDelivery();
 
-update();
+loop();
 
 </script>
 
