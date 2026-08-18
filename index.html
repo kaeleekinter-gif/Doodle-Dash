@@ -1,422 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Doodle Dash</title>
+<script>
+/* =========================================
+   START SCREEN — WORKS IMMEDIATELY
+========================================= */
 
-<style>
-* {
-  box-sizing: border-box;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: none;
+const startScreen = document.getElementById("startScreen");
+const startButton = document.getElementById("startButton");
+
+let gameStarted = false;
+
+startButton.addEventListener("click", startGame);
+startButton.addEventListener("touchend", function(e) {
+    e.preventDefault();
+    startGame();
+});
+
+function startGame() {
+
+    if (gameStarted) return;
+
+    gameStarted = true;
+
+    startScreen.style.display = "none";
+
+    // Start the game once the 3D world is ready
+    if (typeof createOrder === "function") {
+        createOrder();
+    }
 }
 
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: #b9dbe5;
-  font-family: Arial, sans-serif;
-}
 
-canvas {
-  display: block;
-}
+/* =========================================
+   THREE.JS
+========================================= */
 
-/* START SCREEN */
-
-#startScreen {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: #c9e5df;
-}
-
-.startCard {
-  width: min(90%, 430px);
-  padding: 30px;
-
-  text-align: center;
-
-  background: #fffaf0;
-  border: 4px solid #3d3936;
-  border-radius: 28px;
-
-  box-shadow: 8px 8px 0 rgba(61,57,54,.2);
-}
-
-.startCard h1 {
-  margin: 0 0 8px;
-  font-size: 52px;
-  color: #3d3936;
-}
-
-.startCard p {
-  color: #756d67;
-  line-height: 1.5;
-}
-
-#startButton {
-  border: 3px solid #3d3936;
-  border-radius: 15px;
-
-  padding: 13px 25px;
-
-  background: #91bd98;
-  color: white;
-
-  font-size: 18px;
-  font-weight: bold;
-
-  box-shadow: 4px 4px 0 #3d3936;
-}
-
-#startButton:active {
-  transform: translate(3px, 3px);
-}
-
-/* HUD */
-
-#hud {
-  position: fixed;
-  z-index: 20;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-
-  display: flex;
-  justify-content: space-between;
-
-  pointer-events: none;
-}
-
-.hudBox {
-  background: rgba(255,250,240,.94);
-  border: 3px solid #3d3936;
-  border-radius: 15px;
-
-  padding: 9px 13px;
-
-  box-shadow: 3px 3px 0 rgba(61,57,54,.2);
-}
-
-#money {
-  font-size: 19px;
-  font-weight: bold;
-}
-
-#objective {
-  position: fixed;
-  z-index: 20;
-
-  top: 72px;
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  background: #fffaf0;
-  border: 3px solid #3d3936;
-  border-radius: 18px;
-
-  padding: 8px 16px;
-
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-/* PHONE */
-
-#phone {
-  position: fixed;
-  z-index: 50;
-
-  right: 15px;
-  bottom: 85px;
-
-  width: 245px;
-
-  display: none;
-
-  padding: 13px;
-
-  background: #242424;
-  border: 5px solid #111;
-  border-radius: 25px;
-
-  color: white;
-
-  box-shadow: 7px 7px 0 rgba(0,0,0,.3);
-}
-
-.phoneTitle {
-  text-align: center;
-  font-size: 11px;
-  opacity: .65;
-}
-
-.notification {
-  margin-top: 10px;
-
-  padding: 14px;
-
-  background: #f5f5f5;
-  color: #333;
-
-  border-radius: 14px;
-}
-
-.notification h3 {
-  margin: 0 0 8px;
-}
-
-#acceptButton {
-  width: 100%;
-
-  margin-top: 10px;
-
-  padding: 10px;
-
-  border: 0;
-  border-radius: 11px;
-
-  background: #91bd98;
-  color: white;
-
-  font-weight: bold;
-}
-
-/* INTERACTION */
-
-#interaction {
-  position: fixed;
-  z-index: 40;
-
-  left: 50%;
-  bottom: 120px;
-
-  transform: translateX(-50%);
-
-  display: none;
-
-  padding: 11px 20px;
-
-  background: #fff7dc;
-  border: 3px solid #3d3936;
-  border-radius: 15px;
-
-  font-weight: bold;
-}
-
-/* MOBILE CONTROLS */
-
-#controls {
-  position: fixed;
-  z-index: 30;
-
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
-
-  display: flex;
-  justify-content: space-between;
-}
-
-.controlGroup {
-  display: flex;
-  gap: 9px;
-}
-
-.control {
-  width: 64px;
-  height: 57px;
-
-  border: 3px solid #3d3936;
-  border-radius: 16px;
-
-  background: rgba(255,250,240,.9);
-
-  font-size: 23px;
-
-  box-shadow: 3px 3px 0 rgba(61,57,54,.25);
-}
-
-.control:active {
-  transform: translateY(2px);
-}
-
-@media (pointer:fine) {
-  #controls {
-    display: none;
-  }
-}
-
-/* MESSAGE */
-
-#message {
-  position: fixed;
-  z-index: 200;
-
-  left: 50%;
-  top: 50%;
-
-  transform: translate(-50%, -50%);
-
-  display: none;
-
-  min-width: 220px;
-
-  padding: 20px;
-
-  background: #fffaf0;
-
-  border: 4px solid #3d3936;
-  border-radius: 20px;
-
-  text-align: center;
-
-  font-size: 21px;
-  font-weight: bold;
-
-  box-shadow: 6px 6px 0 rgba(61,57,54,.25);
-}
-</style>
-</head>
-
-<body>
-
-<!-- START -->
-
-<div id="startScreen">
-  <div class="startCard">
-
-    <h1>Doodle Dash</h1>
-
-    <p>
-      Your delivery shift starts now.
-    </p>
-
-    <p>
-      Get an order → drive to the restaurant →
-      pick it up → deliver it → get paid!
-    </p>
-
-    <button id="startButton">
-      START DRIVING
-    </button>
-
-  </div>
-</div>
-
-
-<!-- HUD -->
-
-<div id="hud">
-
-  <div class="hudBox">
-    📦 <span id="orderStatus">Waiting...</span>
-  </div>
-
-  <div class="hudBox">
-    💵 $<span id="money">0.00</span>
-  </div>
-
-</div>
-
-<div id="objective">
-  Start your shift!
-</div>
-
-
-<!-- PHONE -->
-
-<div id="phone">
-
-  <div class="phoneTitle">
-    DOODLE PHONE
-  </div>
-
-  <div class="notification">
-
-    <h3>📱 New Delivery!</h3>
-
-    <div id="notificationText"></div>
-
-    <button id="acceptButton">
-      ACCEPT ORDER
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- INTERACTION -->
-
-<div id="interaction">
-  Press E
-</div>
-
-
-<!-- MOBILE -->
-
-<div id="controls">
-
-  <div class="controlGroup">
-    <button class="control" id="left">◀</button>
-    <button class="control" id="right">▶</button>
-  </div>
-
-  <div class="controlGroup">
-    <button class="control" id="brake">▼</button>
-    <button class="control" id="gas">▲</button>
-  </div>
-
-</div>
-
-
-<div id="message"></div>
-
-
-<!-- THREE.JS -->
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
 
 <script>
 
-/* =========================================================
-   SETUP
-========================================================= */
+/* =========================================
+   3D GAME
+========================================= */
 
 const scene = new THREE.Scene();
 
 scene.background = new THREE.Color(0xb9dbe5);
 
 const camera = new THREE.PerspectiveCamera(
-  70,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
+    70,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
 );
 
 const renderer = new THREE.WebGLRenderer({
-  antialias: true
+    antialias: true
 });
 
 renderer.setSize(
-  window.innerWidth,
-  window.innerHeight
+    window.innerWidth,
+    window.innerHeight
 );
 
 renderer.setPixelRatio(
-  Math.min(window.devicePixelRatio, 2)
+    Math.min(window.devicePixelRatio, 2)
 );
 
 renderer.shadowMap.enabled = true;
@@ -424,1447 +72,194 @@ renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
 
-/* =========================================================
-   LIGHTING
-========================================================= */
+/* LIGHTING */
 
-const skyLight = new THREE.HemisphereLight(
-  0xffffff,
-  0x7c9275,
-  2
+const light = new THREE.HemisphereLight(
+    0xffffff,
+    0x7c9275,
+    2
 );
 
-scene.add(skyLight);
+scene.add(light);
 
-
-const sunlight = new THREE.DirectionalLight(
-  0xfff1d4,
-  2
+const sun = new THREE.DirectionalLight(
+    0xffffff,
+    2
 );
 
-sunlight.position.set(
-  100,
-  150,
-  80
-);
+sun.position.set(100, 150, 80);
 
-sunlight.castShadow = true;
-
-scene.add(sunlight);
+scene.add(sun);
 
 
-/* =========================================================
-   MATERIAL
-========================================================= */
-
-function makeMaterial(color) {
-  return new THREE.MeshStandardMaterial({
-    color: color,
-    roughness: 0.85
-  });
-}
-
-
-/* =========================================================
-   GROUND
-========================================================= */
+/* GROUND */
 
 const ground = new THREE.Mesh(
-  new THREE.PlaneGeometry(900, 900),
-  makeMaterial(0xa8c99d)
+    new THREE.PlaneGeometry(900, 900),
+    new THREE.MeshStandardMaterial({
+        color: 0xa8c99d
+    })
 );
 
 ground.rotation.x = -Math.PI / 2;
 
-ground.receiveShadow = true;
-
 scene.add(ground);
 
 
-/* =========================================================
-   ROADS
-========================================================= */
-
-const roads = [-180, -120, -60, 0, 60, 120, 180];
-const ROAD_WIDTH = 14;
-
-function makeRoadVertical(x) {
-
-  const road = new THREE.Mesh(
-    new THREE.BoxGeometry(
-      ROAD_WIDTH,
-      0.08,
-      760
-    ),
-    makeMaterial(0x747576)
-  );
-
-  road.position.set(x, 0.04, 0);
-
-  scene.add(road);
-
-
-  for (const side of [-1, 1]) {
-
-    const sidewalk = new THREE.Mesh(
-      new THREE.BoxGeometry(
-        3,
-        0.12,
-        760
-      ),
-      makeMaterial(0xd6d0c7)
-    );
-
-    sidewalk.position.set(
-      x + side * 8.5,
-      0.08,
-      0
-    );
-
-    scene.add(sidewalk);
-
-  }
-
-}
-
-
-function makeRoadHorizontal(z) {
-
-  const road = new THREE.Mesh(
-    new THREE.BoxGeometry(
-      760,
-      0.08,
-      ROAD_WIDTH
-    ),
-    makeMaterial(0x747576)
-  );
-
-  road.position.set(0, 0.04, z);
-
-  scene.add(road);
-
-
-  for (const side of [-1, 1]) {
-
-    const sidewalk = new THREE.Mesh(
-      new THREE.BoxGeometry(
-        760,
-        0.12,
-        3
-      ),
-      makeMaterial(0xd6d0c7)
-    );
-
-    sidewalk.position.set(
-      0,
-      0.08,
-      z + side * 8.5
-    );
-
-    scene.add(sidewalk);
-
-  }
-
-}
-
-
-roads.forEach(makeRoadVertical);
-roads.forEach(makeRoadHorizontal);
-
-
-/* =========================================================
-   ROAD DASHES
-========================================================= */
-
-for (const x of roads) {
-
-  for (let z = -370; z < 370; z += 18) {
-
-    const line = new THREE.Mesh(
-      new THREE.BoxGeometry(
-        0.25,
-        0.04,
-        8
-      ),
-      makeMaterial(0xf2e5b6)
-    );
-
-    line.position.set(
-      x,
-      0.1,
-      z
-    );
-
-    scene.add(line);
-
-  }
-
-}
-
-
-for (const z of roads) {
-
-  for (let x = -370; x < 370; x += 18) {
-
-    const line = new THREE.Mesh(
-      new THREE.BoxGeometry(
-        8,
-        0.04,
-        0.25
-      ),
-      makeMaterial(0xf2e5b6)
-    );
-
-    line.position.set(
-      x,
-      0.1,
-      z
-    );
-
-    scene.add(line);
-
-  }
-
-}
-
-
-/* =========================================================
-   HOUSES
-========================================================= */
-
-const houses = [];
-
-const houseColors = [
-  0xe8b5aa,
-  0xdac59c,
-  0xb7d3ad,
-  0xcab8db,
-  0xd6af8c,
-  0xa9ced1
-];
-
-
-function makeHouse(x, z) {
-
-  const group = new THREE.Group();
-
-
-  const body = new THREE.Mesh(
-    new THREE.BoxGeometry(
-      15,
-      9,
-      12
-    ),
-    makeMaterial(
-      houseColors[
-        Math.floor(
-          Math.random() * houseColors.length
-        )
-      ]
-    )
-  );
-
-  body.position.y = 4.5;
-
-  body.castShadow = true;
-
-  group.add(body);
-
-
-  const roof = new THREE.Mesh(
-    new THREE.ConeGeometry(
-      10,
-      6,
-      4
-    ),
-    makeMaterial(0x967070)
-  );
-
-  roof.position.y = 12;
-
-  roof.rotation.y = Math.PI / 4;
-
-  roof.castShadow = true;
-
-  group.add(roof);
-
-
-  const door = new THREE.Mesh(
-    new THREE.BoxGeometry(
-      2.5,
-      4,
-      0.25
-    ),
-    makeMaterial(0x806153)
-  );
-
-  door.position.set(
-    0,
-    2,
-    -6.15
-  );
-
-  group.add(door);
-
-
-  for (const wx of [-4, 4]) {
-
-    const window = new THREE.Mesh(
-      new THREE.BoxGeometry(
-        3,
-        2.5,
-        0.2
-      ),
-      makeMaterial(0xa9d8df)
-    );
-
-    window.position.set(
-      wx,
-      6,
-      -6.15
-    );
-
-    group.add(window);
-
-  }
-
-
-  group.position.set(x, 0, z);
-
-  scene.add(group);
-
-
-  houses.push({
-    x: x,
-    z: z,
-    group: group
-  });
-
-}
-
-
-/*
-  Houses go inside the blocks,
-  never directly on the roads.
-*/
-
-for (let x = -210; x <= 210; x += 60) {
-
-  for (let z = -210; z <= 210; z += 60) {
-
-    if (
-      roads.includes(x) ||
-      roads.includes(z)
-    ) {
-      continue;
-    }
-
-    makeHouse(x - 17, z - 17);
-    makeHouse(x + 17, z + 17);
-
-  }
-
-}
-
-
-/* =========================================================
-   TREES
-========================================================= */
-
-const trees = [];
-
-
-function makeTree(x, z) {
-
-  const group = new THREE.Group();
-
-
-  const trunk = new THREE.Mesh(
-    new THREE.CylinderGeometry(
-      0.65,
-      0.8,
-      4,
-      8
-    ),
-    makeMaterial(0x80624d)
-  );
-
-  trunk.position.y = 2;
-
-  group.add(trunk);
-
-
-  const leaves = new THREE.Mesh(
-    new THREE.IcosahedronGeometry(
-      4,
-      1
-    ),
-    makeMaterial(0x72a36d)
-  );
-
-  leaves.position.y = 6;
-
-  leaves.castShadow = true;
-
-  group.add(leaves);
-
-
-  group.position.set(x, 0, z);
-
-  scene.add(group);
-
-
-  trees.push({
-    x: x,
-    z: z
-  });
-
-}
-
-
-/*
-  Only create trees when they're
-  safely away from roads.
-*/
-
-for (let x = -240; x <= 240; x += 30) {
-
-  for (let z = -240; z <= 240; z += 30) {
-
-    const closeX = roads.some(
-      r => Math.abs(x - r) < 12
-    );
-
-    const closeZ = roads.some(
-      r => Math.abs(z - r) < 12
-    );
-
-    if (
-      !closeX &&
-      !closeZ &&
-      Math.random() < 0.3
-    ) {
-      makeTree(x, z);
-    }
-
-  }
-
-}
-
-
-/* =========================================================
-   RESTAURANTS
-========================================================= */
-
-const restaurants = [];
-
-
-function makeRestaurant(
-  name,
-  x,
-  z,
-  color
-) {
-
-  const group = new THREE.Group();
-
-
-  const building = new THREE.Mesh(
-    new THREE.BoxGeometry(
-      20,
-      10,
-      15
-    ),
-    makeMaterial(color)
-  );
-
-  building.position.y = 5;
-
-  building.castShadow = true;
-
-  group.add(building);
-
-
-  const roof = new THREE.Mesh(
-    new THREE.BoxGeometry(
-      22,
-      1,
-      17
-    ),
-    makeMaterial(0x806869)
-  );
-
-  roof.position.y = 10.5;
-
-  group.add(roof);
-
-
-  const sign = new THREE.Mesh(
-    new THREE.BoxGeometry(
-      15,
-      3,
-      0.3
-    ),
-    makeMaterial(0xffefb7)
-  );
-
-  sign.position.set(
-    0,
-    8,
-    -7.7
-  );
-
-  group.add(sign);
-
-
-  group.position.set(
-    x,
-    0,
-    z
-  );
-
-  scene.add(group);
-
-
-  restaurants.push({
-    name: name,
-    x: x,
-    z: z
-  });
-
-}
-
-
-makeRestaurant(
-  "Doodle Burger",
-  0,
-  -45,
-  0xe4ae91
-);
-
-makeRestaurant(
-  "Sunny Cafe",
-  120,
-  0,
-  0xd7b4d5
-);
-
-makeRestaurant(
-  "Noodle House",
-  -120,
-  0,
-  0x9fc4d5
-);
-
-
-/* =========================================================
-   CAR / FIRST PERSON
-========================================================= */
-
-/*
-  The player is the camera.
-
-  X = left/right position
-  Z = forward/back position
-  rotationY = direction
-*/
+/* =========================================
+   SIMPLE TEST CAR
+========================================= */
 
 const player = {
-  x: 0,
-  z: 30,
-  rotation: 0,
-  speed: 0
+    x: 0,
+    z: 30,
+    rotation: 0,
+    speed: 0
 };
 
-
-/* Camera starts inside the car */
-
 camera.position.set(
-  player.x,
-  3.1,
-  player.z
+    player.x,
+    3,
+    player.z
 );
 
 camera.rotation.order = "YXZ";
 
-
-/* Dashboard */
-
-const dashboard = new THREE.Mesh(
-  new THREE.BoxGeometry(
-    10,
-    1.1,
-    2
-  ),
-  makeMaterial(0x393735)
-);
-
-dashboard.position.set(
-  0,
-  -2.45,
-  -1
-);
-
-camera.add(dashboard);
-
-
-/* Hood */
-
-const hood = new THREE.Mesh(
-  new THREE.BoxGeometry(
-    8,
-    0.7,
-    4
-  ),
-  makeMaterial(0xe99d92)
-);
-
-hood.position.set(
-  0,
-  -1.8,
-  -6
-);
-
-camera.add(hood);
-
-
-/* Windshield pillars */
-
-for (const side of [-1, 1]) {
-
-  const pillar = new THREE.Mesh(
-    new THREE.BoxGeometry(
-      0.35,
-      5,
-      0.4
-    ),
-    makeMaterial(0x292827)
-  );
-
-  pillar.position.set(
-    side * 5,
-    0,
-    -2
-  );
-
-  camera.add(pillar);
-
-}
-
-
-/* Steering wheel */
-
-const steeringWheel = new THREE.Mesh(
-  new THREE.TorusGeometry(
-    1.05,
-    0.17,
-    8,
-    24
-  ),
-  makeMaterial(0x252321)
-);
-
-steeringWheel.position.set(
-  -2.7,
-  -1.7,
-  -2.6
-);
-
-steeringWheel.rotation.x =
-  Math.PI / 2;
-
-camera.add(steeringWheel);
-
-
 scene.add(camera);
 
 
-/* =========================================================
-   GAME STATE
-========================================================= */
-
-let gameStarted = false;
-
-let orderState = "none";
-
-let currentRestaurant = null;
-let currentHouse = null;
-
-let money = 0;
-let currentPay = 0;
-
-let customerName = "";
-
-
-/* =========================================================
-   INPUT
-========================================================= */
+/* =========================================
+   CONTROLS
+========================================= */
 
 const keys = {};
 
+window.addEventListener("keydown", function(e) {
+    keys[e.key.toLowerCase()] = true;
 
-window.addEventListener(
-  "keydown",
-  function(event) {
-
-    keys[event.key.toLowerCase()] = true;
-
-    if (
-      event.key.toLowerCase() === "e"
-    ) {
-      interact();
+    if (e.key.toLowerCase() === "e") {
+        interact();
     }
+});
 
-  }
-);
+window.addEventListener("keyup", function(e) {
+    keys[e.key.toLowerCase()] = false;
+});
 
 
-window.addEventListener(
-  "keyup",
-  function(event) {
-
-    keys[event.key.toLowerCase()] = false;
-
-  }
-);
-
-
-/* =========================================================
-   MOBILE BUTTONS
-========================================================= */
-
-function holdButton(id, key) {
-
-  const button =
-    document.getElementById(id);
-
-
-  button.addEventListener(
-    "pointerdown",
-    function(event) {
-
-      event.preventDefault();
-
-      keys[key] = true;
-
-    }
-  );
-
-
-  button.addEventListener(
-    "pointerup",
-    function() {
-
-      keys[key] = false;
-
-    }
-  );
-
-
-  button.addEventListener(
-    "pointercancel",
-    function() {
-
-      keys[key] = false;
-
-    }
-  );
-
-
-  button.addEventListener(
-    "pointerleave",
-    function() {
-
-      keys[key] = false;
-
-    }
-  );
-
-}
-
-
-holdButton("left", "a");
-holdButton("right", "d");
-holdButton("gas", "w");
-holdButton("brake", "s");
-
-
-/* =========================================================
-   START GAME
-========================================================= */
-
-document.getElementById(
-  "startButton"
-).addEventListener(
-  "click",
-  function() {
-
-    gameStarted = true;
-
-    document.getElementById(
-      "startScreen"
-    ).style.display = "none";
-
-    createOrder();
-
-  }
-);
-
-
-/* =========================================================
-   CREATE ORDER
-========================================================= */
-
-function createOrder() {
-
-  currentRestaurant =
-    restaurants[
-      Math.floor(
-        Math.random() *
-        restaurants.length
-      )
-    ];
-
-
-  currentHouse =
-    houses[
-      Math.floor(
-        Math.random() *
-        houses.length
-      )
-    ];
-
-
-  const names = [
-    "Mia",
-    "Lily",
-    "Emma",
-    "Ava",
-    "Sophie",
-    "Ella",
-    "Ruby",
-    "Noah"
-  ];
-
-
-  customerName =
-    names[
-      Math.floor(
-        Math.random() *
-        names.length
-      )
-    ];
-
-
-  currentPay =
-    5 +
-    Math.floor(
-      Math.random() * 8
-    );
-
-
-  orderState = "offered";
-
-
-  document.getElementById(
-    "notificationText"
-  ).innerHTML =
-    "🍔 Pick up from:<br>" +
-    "<b>" +
-    currentRestaurant.name +
-    "</b><br><br>" +
-
-    "🏠 Deliver to:<br>" +
-    "<b>" +
-    customerName +
-    "</b><br><br>" +
-
-    "💵 Pay: <b>$" +
-    currentPay.toFixed(2) +
-    "</b>";
-
-
-  document.getElementById(
-    "phone"
-  ).style.display = "block";
-
-
-  document.getElementById(
-    "objective"
-  ).textContent =
-    "📱 You got a new delivery!";
-
-}
-
-
-/* =========================================================
-   ACCEPT ORDER
-========================================================= */
-
-document.getElementById(
-  "acceptButton"
-).addEventListener(
-  "click",
-  function() {
-
-    document.getElementById(
-      "phone"
-    ).style.display = "none";
-
-
-    orderState =
-      "restaurant";
-
-
-    document.getElementById(
-      "orderStatus"
-    ).textContent =
-      "Drive to " +
-      currentRestaurant.name;
-
-
-    document.getElementById(
-      "objective"
-    ).textContent =
-      "🍔 Drive to the restaurant";
-
-  }
-);
-
-
-/* =========================================================
-   DISTANCE
-========================================================= */
-
-function distance(
-  x1,
-  z1,
-  x2,
-  z2
-) {
-
-  return Math.sqrt(
-    (x1 - x2) ** 2 +
-    (z1 - z2) ** 2
-  );
-
-}
-
-
-/* =========================================================
-   INTERACTION
-========================================================= */
-
-function interact() {
-
-  if (!gameStarted) {
-    return;
-  }
-
-
-  if (
-    orderState === "restaurant" &&
-    distance(
-      player.x,
-      player.z,
-      currentRestaurant.x,
-      currentRestaurant.z
-    ) < 20
-  ) {
-
-    orderState =
-      "customer";
-
-
-    document.getElementById(
-      "orderStatus"
-    ).textContent =
-      "Deliver to " +
-      customerName;
-
-
-    document.getElementById(
-      "objective"
-    ).textContent =
-      "📦 Food picked up! Drive to the house.";
-
-
-    showMessage(
-      "Food picked up! 📦"
-    );
-
-
-    return;
-
-  }
-
-
-  if (
-    orderState === "customer" &&
-    distance(
-      player.x,
-      player.z,
-      currentHouse.x,
-      currentHouse.z
-    ) < 15
-  ) {
-
-    completeDelivery();
-
-  }
-
-}
-
-
-/* =========================================================
-   INTERACTION PROMPT
-========================================================= */
-
-function updateInteraction() {
-
-  const prompt =
-    document.getElementById(
-      "interaction"
-    );
-
-
-  let show = false;
-
-
-  if (
-    orderState === "restaurant" &&
-    distance(
-      player.x,
-      player.z,
-      currentRestaurant.x,
-      currentRestaurant.z
-    ) < 20
-  ) {
-
-    prompt.textContent =
-      "Press E — Pick Up Food 📦";
-
-    show = true;
-
-  }
-
-
-  if (
-    orderState === "customer" &&
-    distance(
-      player.x,
-      player.z,
-      currentHouse.x,
-      currentHouse.z
-    ) < 15
-  ) {
-
-    prompt.textContent =
-      "Press E — Drop Off 📦";
-
-    show = true;
-
-  }
-
-
-  prompt.style.display =
-    show ? "block" : "none";
-
-}
-
-
-/* =========================================================
-   COMPLETE DELIVERY
-========================================================= */
-
-function completeDelivery() {
-
-  money += currentPay;
-
-
-  document.getElementById(
-    "money"
-  ).textContent =
-    money.toFixed(2);
-
-
-  document.getElementById(
-    "orderStatus"
-  ).textContent =
-    "Delivery complete!";
-
-
-  document.getElementById(
-    "objective"
-  ).textContent =
-    "💵 Nice! Waiting for your next order...";
-
-
-  orderState =
-    "complete";
-
-
-  showMessage(
-    "Delivery Complete!<br><br>+" +
-    "$" +
-    currentPay.toFixed(2) +
-    " 💵"
-  );
-
-
-  setTimeout(
-    createOrder,
-    2200
-  );
-
-}
-
-
-/* =========================================================
+/* =========================================
    DRIVING
-========================================================= */
+========================================= */
 
-function updateDriving() {
+function drive() {
 
-  if (!gameStarted) {
-    return;
-  }
+    if (!gameStarted) return;
 
+    const forward =
+        keys["w"] ||
+        keys["arrowup"];
 
-  const forward =
-    keys["w"] ||
-    keys["arrowup"];
+    const backward =
+        keys["s"] ||
+        keys["arrowdown"];
 
+    const left =
+        keys["a"] ||
+        keys["arrowleft"];
 
-  const backward =
-    keys["s"] ||
-    keys["arrowdown"];
-
-
-  const left =
-    keys["a"] ||
-    keys["arrowleft"];
-
-
-  const right =
-    keys["d"] ||
-    keys["arrowright"];
+    const right =
+        keys["d"] ||
+        keys["arrowright"];
 
 
-  /*
-    ACCELERATION
-  */
-
-  if (forward) {
-
-    player.speed += 0.018;
-
-  }
-  else {
-
-    player.speed *= 0.96;
-
-  }
-
-
-  /*
-    REVERSE / BRAKE
-  */
-
-  if (backward) {
-
-    if (player.speed > 0) {
-
-      player.speed -= 0.035;
-
-    }
-    else {
-
-      player.speed -= 0.012;
-
+    if (forward) {
+        player.speed += 0.015;
+    } else {
+        player.speed *= 0.96;
     }
 
-  }
+
+    if (backward) {
+        player.speed -= 0.02;
+    }
 
 
-  /*
-    SPEED LIMIT
-  */
-
-  player.speed =
-    Math.max(
-      -0.35,
-      Math.min(
-        player.speed,
-        0.85
-      )
+    player.speed = Math.max(
+        -0.3,
+        Math.min(player.speed, 0.8)
     );
-
-
-  /*
-    STEERING
-  */
-
-  if (
-    Math.abs(player.speed) > 0.03
-  ) {
-
-    const steering =
-      0.035 *
-      Math.min(
-        Math.abs(player.speed) * 2,
-        1
-      );
 
 
     if (left) {
-
-      player.rotation +=
-        player.speed >= 0
-        ? steering
-        : -steering;
-
+        player.rotation += 0.035;
     }
-
 
     if (right) {
-
-      player.rotation -=
-        player.speed >= 0
-        ? steering
-        : -steering;
-
+        player.rotation -= 0.035;
     }
 
-  }
+
+    player.x -=
+        Math.sin(player.rotation) *
+        player.speed;
+
+    player.z -=
+        Math.cos(player.rotation) *
+        player.speed;
 
 
-  /*
-    MOVE
-  */
+    camera.position.x = player.x;
+    camera.position.z = player.z;
 
-  player.x -=
-    Math.sin(player.rotation) *
-    player.speed;
-
-
-  player.z -=
-    Math.cos(player.rotation) *
-    player.speed;
-
-
-  /*
-    MAP BOUNDARY
-  */
-
-  player.x =
-    Math.max(
-      -370,
-      Math.min(
-        370,
-        player.x
-      )
-    );
-
-
-  player.z =
-    Math.max(
-      -370,
-      Math.min(
-        370,
-        player.z
-      )
-    );
-
-
-  /*
-    CAMERA
-  */
-
-  camera.position.x =
-    player.x;
-
-
-  camera.position.z =
-    player.z;
-
-
-  camera.rotation.y =
-    player.rotation;
-
-
-  /*
-    SMALL CAR BOUNCE
-  */
-
-  camera.position.y =
-    3.1 +
-    Math.sin(
-      performance.now() * 0.012
-    ) *
-    Math.abs(player.speed) *
-    0.025;
-
+    camera.rotation.y = player.rotation;
 }
 
 
-/* =========================================================
-   COLLISIONS
-========================================================= */
+/* =========================================
+   INTERACTION
+========================================= */
 
-function checkCollisions() {
-
-  /*
-    Houses
-  */
-
-  for (const house of houses) {
-
-    const d =
-      distance(
-        player.x,
-        player.z,
-        house.x,
-        house.z
-      );
-
-
-    if (d < 8) {
-
-      player.x +=
-        Math.sin(player.rotation) * 0.7;
-
-      player.z +=
-        Math.cos(player.rotation) * 0.7;
-
-      player.speed *= -0.25;
-
-    }
-
-  }
-
-
-  /*
-    Trees
-  */
-
-  for (const tree of trees) {
-
-    const d =
-      distance(
-        player.x,
-        player.z,
-        tree.x,
-        tree.z
-      );
-
-
-    if (d < 4) {
-
-      player.x +=
-        Math.sin(player.rotation) * 0.8;
-
-      player.z +=
-        Math.cos(player.rotation) * 0.8;
-
-      player.speed *= -0.3;
-
-    }
-
-  }
-
+function interact() {
+    console.log("Interaction!");
 }
 
 
-/* =========================================================
-   POPUP
-========================================================= */
+/* =========================================
+   LOOP
+========================================= */
 
-let messageTimer = null;
+function loop() {
 
+    requestAnimationFrame(loop);
 
-function showMessage(text) {
+    drive();
 
-  const box =
-    document.getElementById(
-      "message"
+    renderer.render(
+        scene,
+        camera
     );
-
-
-  box.innerHTML = text;
-
-  box.style.display = "block";
-
-
-  clearTimeout(messageTimer);
-
-
-  messageTimer =
-    setTimeout(
-      function() {
-
-        box.style.display =
-          "none";
-
-      },
-      1400
-    );
-
 }
 
+loop();
 
-/* =========================================================
+
+/* =========================================
    RESIZE
-========================================================= */
+========================================= */
 
-window.addEventListener(
-  "resize",
-  function() {
+window.addEventListener("resize", function() {
 
     camera.aspect =
-      window.innerWidth /
-      window.innerHeight;
+        window.innerWidth /
+        window.innerHeight;
 
     camera.updateProjectionMatrix();
 
     renderer.setSize(
-      window.innerWidth,
-      window.innerHeight
+        window.innerWidth,
+        window.innerHeight
     );
 
-  }
-);
-
-
-/* =========================================================
-   GAME LOOP
-========================================================= */
-
-function gameLoop() {
-
-  requestAnimationFrame(
-    gameLoop
-  );
-
-
-  updateDriving();
-
-  checkCollisions();
-
-  updateInteraction();
-
-
-  renderer.render(
-    scene,
-    camera
-  );
-
-}
-
-
-gameLoop();
+});
 
 </script>
-
-</body>
-</html>
